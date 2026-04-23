@@ -42,7 +42,8 @@ export default function TechSection() {
 
             <div className="slider-container">
                 <div className="slider-track">
-                    {tecnologias.map((tech, index) => (
+                    {/* Se duplica el array para que de la sensacion de bucle infinito */}
+                    {[...tecnologias, ...tecnologias].map((tech, index) => (
                         <div key={index} className="tech-card">
                             <img className="devicon" src={tech.logo} alt={tech.nombre} width={50} height={50} style={{ marginRight: "10px" }} />
                             <span className="tech-name">{tech.nombre}</span>

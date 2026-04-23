@@ -143,3 +143,122 @@
     background-color: rgba(255, 255, 255, 0.1);
     transform: translateY(-3px);
 }
+
+/* =========================================
+   DISEÑO RESPONSIVE (MEDIA QUERIES)
+   Añade esto al final de tu HeroSection.css
+   ========================================= */
+
+/* 1. Pantallas medianas (Tablets horizontales y portátiles pequeños) */
+@media (max-width: 1024px) {
+    .hero-content {
+        gap: 3rem;
+        /* Reducimos el espacio entre foto y texto */
+        width: 90%;
+    }
+
+    .profile-photo-wrapper {
+        width: 300px;
+        /* Reducimos un poco la foto */
+        height: 300px;
+        min-width: 300px;
+    }
+
+    .hero-text h1 {
+        font-size: 2.8rem;
+        /* Letra un poco más pequeña */
+    }
+}
+
+/* 2. Pantallas pequeñas (Tablets verticales y móviles grandes) */
+@media (max-width: 768px) {
+    .hero-section {
+        margin-top: 120px;
+        /* Damos un poco más de aire arriba por la barra flotante */
+        min-height: auto;
+        padding-bottom: 4rem;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        /* ¡LA CLAVE! Apila la foto arriba y el texto abajo */
+        text-align: center;
+        /* Centramos todo */
+        gap: 2.5rem;
+    }
+
+    .profile-photo-wrapper {
+        width: 250px;
+        height: 250px;
+        min-width: 250px;
+    }
+
+    .hero-text {
+        text-align: center;
+        /* Centramos el texto dentro de su contenedor */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* Centramos los elementos internos (botones, bio) */
+    }
+
+    .hero-text h1 {
+        font-size: 2.3rem;
+    }
+
+    .specialty {
+        white-space: normal;
+        /* Permitimos que el texto baje a la siguiente línea si no cabe */
+        padding-left: 0;
+        border-left: none;
+        /* Quitamos la línea lateral... */
+        padding-bottom: 8px;
+        border-bottom: 3px solid #646cff;
+        /* ...y la ponemos debajo porque está centrado */
+        display: inline-block;
+    }
+
+    .bio {
+        font-size: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+        /* Centramos los botones */
+    }
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .profile-photo-wrapper {
+        width: 200px;
+        /* Foto más pequeña */
+        height: 200px;
+        min-width: 200px;
+    }
+
+    /* El texto mas pequeño */
+    .hero-text h1 {
+        font-size: 1.8rem;
+    }
+
+    .specialty {
+        font-size: 1rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        /* Apilamos los botones uno encima del otro */
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        /* Los botones ocupan todo el ancho disponible */
+        text-align: center;
+    }
+}

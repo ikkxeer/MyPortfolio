@@ -1,13 +1,11 @@
 .tech-section {
     width: 100%;
     margin: 80px 0;
-    /* Espacio arriba y abajo */
     text-align: center;
     overflow: hidden;
-    /* Muy importante para que no aparezca barra de scroll horizontal en la web */
 }
 
-/* El título con el degradado que ya usamos antes */
+/* El título */
 .tech-section .section-title {
     font-size: 2.5rem;
     font-weight: 800;
@@ -25,7 +23,6 @@
     max-width: 1200px;
     margin: 0 auto;
     position: relative;
-    /* TRUCO VISUAL: Máscara transparente a los lados para que las tarjetas se desvanezcan al entrar y salir */
     -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
@@ -34,11 +31,8 @@
 .slider-track {
     display: flex;
     gap: 2rem;
-    /* Separación entre tarjetas */
     width: max-content;
-    /* Se estira para caber todas las tarjetas */
-
-    /* LA ANIMACIÓN: 30 segundos, velocidad constante (linear), infinita */
+    padding-right: 2rem;
     animation: scrollInfinito 30s linear infinite;
 }
 
@@ -64,14 +58,14 @@
     /* El cursor normal porque no son botones */
 }
 
+/* Al pasar el mouse por encima de la tarjeta */
 .tech-card:hover {
-    transform: translateY(-5px);
-    /* Pequeño salto al poner el ratón encima */
+    transform: translateY(-3px);
     border-color: #646cff;
-    /* Brillo en tu color acento */
     box-shadow: 0 5px 20px rgba(100, 108, 255, 0.2);
 }
 
+/* Nombre de la tecnologia */
 .tech-name {
     color: #e0e0e0;
     font-weight: 600;
@@ -79,15 +73,15 @@
     letter-spacing: 1px;
 }
 
-/* EL MOTOR DE LA ANIMACIÓN */
+/* Animacion de scroll infinito */
 @keyframes scrollInfinito {
-    0% {
+    from {
         transform: translateX(0);
-        /* Empieza en la posición 0 */
     }
 
-    100% {
-        /* Se mueve la mitad de su tamaño exacto (porque duplicamos la lista) */
-        transform: translateX(calc(-50% - 1rem));
+    to {
+        /* Al llegar al 50% (final de la primera lista), vuelve al inicio */
+        /* Como la segunda lista es idéntica, el salto es imperceptible */
+        transform: translateX(-50%);
     }
 }
