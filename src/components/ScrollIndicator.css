@@ -1,0 +1,80 @@
+/* src/components/ScrollIndicator.css */
+
+.scroll-indicator-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: -30px auto 50px auto;
+    /* Lo subimos un poco para pegarlo al Hero */
+    text-decoration: none;
+    /* Quitamos el subrayado del enlace */
+    opacity: 0.6;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+    position: relative;
+}
+
+.scroll-indicator-container:hover {
+    opacity: 1;
+    /* Se ilumina al pasar el ratón */
+    transform: translateY(3px);
+    /* Baja un poquito */
+}
+
+/* El texto de "Scroll Down" */
+.scroll-text {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #a0a0a0;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+/* El "riel" oscuro */
+.scroll-line {
+    width: 2px;
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    /* Oculta la gota cuando se sale del riel */
+    border-radius: 4px;
+}
+
+/* La "gota" de luz que cae */
+.scroll-dot {
+    width: 100%;
+    height: 50px;
+    background-color: #646cff;
+    /* Tu color de acento azul */
+    position: absolute;
+    top: -20px;
+    /* Empieza escondida arriba */
+    border-radius: 4px;
+    box-shadow: 0 0 10px #646cff, 0 0 20px #646cff;
+    /* El resplandor */
+
+    /* Aquí llamamos a la animación. Dura 2 segundos y es infinita */
+    animation: caidaDeLuz 2.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* LA MAGIA DE LA ANIMACIÓN */
+@keyframes caidaDeLuz {
+    0% {
+        top: -20px;
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        top: 150px;
+        /* Cae hasta abajo */
+        opacity: 0;
+        /* Se desvanece al llegar al final */
+    }
+}

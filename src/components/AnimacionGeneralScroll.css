@@ -1,0 +1,16 @@
+/* Animacion general de scroll de forma suave aparecen los elementos */
+
+/* Estado inicial: Oculto y un poco hacia abajo */
+.reveal-wrapper {
+    opacity: 0;
+    transform: translateY(40px);
+    /* Empieza 40px más abajo */
+    transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1),
+        transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+/* Estado final: Visible y en su posición original */
+.reveal-wrapper.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}

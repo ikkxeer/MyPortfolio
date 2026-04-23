@@ -1,0 +1,106 @@
+/* 1. BARRA DE NAVEGACIÓN SUPERIOR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem 5%;
+    background-color: rgba(20, 20, 20, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+/* 2. EL LOGO */
+.logo h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+/* 3. CONTENEDOR DE LINKS */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+/* 4. LOS BOTONES (Preparando el terreno para la burbuja) */
+.nav-links a {
+    position: relative;
+    /* Necesario para que la burbuja se quede dentro */
+    color: #a0a0a0;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    overflow: hidden;
+    /* Corta la burbuja si se sale de los bordes del botón */
+    transition: color 0.3s ease, transform 0.3s ease;
+    z-index: 1;
+    /* Mantiene el texto por encima de la burbuja */
+    display: inline-block;
+}
+
+/* 5. LA BURBUJA (Efecto Liquid Glass) */
+.nav-links a::before {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0px;
+    height: 0px;
+
+    /* --- MAGIA DEL CRISTAL LÍQUIDO --- */
+    /* Fondo semitransparente con un toque de luz */
+    background: linear-gradient(135deg, rgba(56, 65, 185, 0.2), rgba(135, 120, 231, 0.541));
+    /* Desenfoque para que lo de atrás se vea borroso a través de la burbuja */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* Un borde super finito y brillante para simular el cristal */
+    border: 1px solid rgba(23, 47, 143, 0.18);
+    /* Sombra interior para darle volumen de burbuja */
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.1);
+
+    border-radius: 50%;
+    z-index: -1;
+    transition: width 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+        height 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+        bottom 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+        opacity 0.3s ease;
+    opacity: 0;
+    /* Empieza invisible */
+}
+
+/* 6. AL PASAR EL RATÓN (Explosión del Cristal) */
+.nav-links a:hover::before {
+    width: 120px;
+    /* Un poco más contenida para que el cristal se vea denso */
+    height: 120px;
+    bottom: -20px;
+    opacity: 1;
+    /* Aparece al crecer */
+}
+
+.nav-links a:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    /* Hace que el texto brille un poco dentro del cristal */
+}

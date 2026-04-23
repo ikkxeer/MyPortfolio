@@ -1,0 +1,146 @@
+/* src/components/ProjectSection.css */
+
+/* 1. CONTENEDOR DE LA SECCIÓN */
+.projects-section {
+    width: 85%;
+    max-width: 1100px;
+    margin: 40px auto 150px auto;
+    /* Centrado y con espacio arriba y abajo */
+    text-align: center;
+}
+
+/* 2. TÍTULO DE LA SECCIÓN */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 3rem;
+    /* El mismo degradado de tu nombre en el Hero */
+    background: linear-gradient(135deg, #ffffff, #a0a0a0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* 3. LA CUADRÍCULA (GRID) MÁGICA */
+.projects-grid {
+    display: grid;
+    /* Esto hace que las tarjetas se acomoden solas según el espacio */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    /* Separación entre tarjetas */
+}
+
+/* 4. LA TARJETA (ESTILO CRISTAL) */
+.project-card {
+    background-color: rgba(30, 30, 30, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    overflow: hidden;
+    /* Para que la imagen no se salga de las esquinas redondas */
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    /* Flota hacia arriba al pasar el ratón */
+    border-color: rgba(100, 108, 255, 0.3);
+    /* El borde brilla en azul */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(100, 108, 255, 0.1);
+}
+
+/* 5. ESPACIO PARA LA IMAGEN */
+.project-image-placeholder {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.2));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+    font-size: 1.2rem;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* 6. LA INFORMACIÓN (TEXTOS Y BOTONES) */
+.project-info {
+    padding: 1.5rem;
+}
+
+.project-info h3 {
+    margin: 0 0 0.8rem 0;
+    font-size: 1.4rem;
+    color: #ffffff;
+}
+
+.project-info p {
+    color: #a0a0a0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    min-height: 70px;
+    /* Mantiene la misma altura aunque el texto sea corto */
+}
+
+/* 7. ETIQUETAS DE TECNOLOGÍA (Píldoras) */
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    /* Si no caben, bajan a la siguiente línea */
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tag {
+    background-color: rgba(100, 108, 255, 0.1);
+    /* Fondo del color acento transparente */
+    color: #7c83ff;
+    /* Texto del color acento */
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid rgba(100, 108, 255, 0.2);
+}
+
+/* 8. BOTONES DE ENLACE */
+.project-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.link-btn {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: background-color 0.3s ease;
+}
+
+.link-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.primary-link {
+    background-color: rgba(100, 108, 255, 0.2);
+    color: #a5aaff;
+}
+
+.primary-link:hover {
+    background-color: rgba(100, 108, 255, 0.4);
+}
+
+.project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Esta es la clave: recorta la imagen para que llene el espacio sin deformarse */
+    display: block;
+}

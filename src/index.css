@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+/* 1. Aplicamos las reglas de Firefox a html y body */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, rgb(70, 71, 125) 0%, rgb(35, 36, 70) 100%);
+  background-attachment: fixed;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  color: #ffffff;
+  min-height: 100vh;
+
+  /* Ocultar barra de scroll para Firefox */
+  scrollbar-width: none;
+}
+
+/* 2. Aplicamos la regla de Chrome/Safari/Edge a TODO usando el asterisco (*) */
+*::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Para navegadores antiguos de Microsoft */
+* {
+  -ms-overflow-style: none !important;
+}
+
+main {
+  padding-top: 120px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Hace que el scroll sea mas suave */
+html {
+  scroll-behavior: smooth;
+}
