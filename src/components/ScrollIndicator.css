@@ -75,3 +75,18 @@
         /* Se desvanece al llegar al final */
     }
 }
+
+/* Puntito al final de la linea */
+.scroll-end-dot {
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    margin-top: 4px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scroll-indicator-container:hover .scroll-end-dot {
+    background-color: #646cff;
+    box-shadow: 0 0 10px #646cff;
+}

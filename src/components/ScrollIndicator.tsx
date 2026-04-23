@@ -8,6 +8,7 @@ export default function ScrollIndicator() {
             <div className="scroll-line">
                 <div className="scroll-dot"></div>
             </div>
+            <div className="scroll-end-dot"></div>
         </a>
     )
 }

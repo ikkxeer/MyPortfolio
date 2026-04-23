@@ -6,6 +6,8 @@ import ScrollIndicator from './components/ScrollIndicator'
 import TechSection from './components/TechSection'
 import ProjectSection from './components/ProjectSection'
 import AnimacionGeneralScroll from './components/AnimacionGeneralScroll'
+import VideosSection from './components/VideosSection'
+import ContactSection from './components/ContactSection'
 
 function App() {
   return (
@@ -25,6 +27,14 @@ function App() {
 
       <AnimacionGeneralScroll>
         <ProjectSection />
+      </AnimacionGeneralScroll>
+
+      <AnimacionGeneralScroll>
+        <VideosSection />
+      </AnimacionGeneralScroll>
+
+      <AnimacionGeneralScroll>
+        <ContactSection />
       </AnimacionGeneralScroll>
     </div>
   )
