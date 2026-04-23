@@ -1,44 +1,30 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css'
+// Importamos lo que siempre estará visible
+import CustomCursor from './components/CustomCursor'
 import AuroraBackground from './components/AuroraBackground'
 import Navbar from './components/Navbar'
-import HeroSection from './components/HeroSection'
-import ScrollIndicator from './components/ScrollIndicator'
-import TechSection from './components/TechSection'
-import ProjectSection from './components/ProjectSection'
-import AnimacionGeneralScroll from './components/AnimacionGeneralScroll'
-import VideosSection from './components/VideosSection'
-import ContactSection from './components/ContactSection'
-import CustomCursor from './components/CustomCursor'
+
+// Importamos las paginas
+import Home from './pages/Home'
+import SobreMi from './pages/SobreMi'
 
 function App() {
   return (
-    <div>
+    <BrowserRouter>
+
+      {/* Esto se ve en todas las páginas */}
       <CustomCursor />
       <AuroraBackground />
-
       <Navbar />
-      <HeroSection />
 
-      <AnimacionGeneralScroll>
-        <ScrollIndicator />
-      </AnimacionGeneralScroll>
+      {/* Esto cambia según la URL */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/sobre-mi" element={<SobreMi />} />
+      </Routes>
 
-      <AnimacionGeneralScroll>
-        <TechSection />
-      </AnimacionGeneralScroll>
-
-      <AnimacionGeneralScroll>
-        <ProjectSection />
-      </AnimacionGeneralScroll>
-
-      <AnimacionGeneralScroll>
-        <VideosSection />
-      </AnimacionGeneralScroll>
-
-      <AnimacionGeneralScroll>
-        <ContactSection />
-      </AnimacionGeneralScroll>
-    </div>
+    </BrowserRouter>
   )
 }
 

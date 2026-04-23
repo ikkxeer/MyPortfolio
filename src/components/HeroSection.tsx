@@ -49,7 +49,7 @@ export default function HeroSection() {
 
                     <div className="hero-buttons">
                         <a href="#" className="btn-primary">Descargar CV</a>
-                        <a href="#" className="btn-secondary">Contactar</a>
+                        <a href="#contacto" className="btn-secondary">Contactar</a>
                     </div>
                 </div>
             </div>
