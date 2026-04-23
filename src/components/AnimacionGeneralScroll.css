@@ -1,5 +1,3 @@
-/* Animacion general de scroll de forma suave aparecen los elementos */
-
 /* Estado inicial: Oculto y un poco hacia abajo */
 .reveal-wrapper {
     opacity: 0;

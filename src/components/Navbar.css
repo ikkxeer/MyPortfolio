@@ -1,4 +1,4 @@
-/* 1. BARRA DE NAVEGACIÓN SUPERIOR */
+/* Barra de navegacion superior */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -21,7 +21,7 @@
     z-index: 1000;
 }
 
-/* 2. EL LOGO */
+/* Logo */
 .logo h2 {
     margin: 0;
     color: #ffffff;
@@ -30,7 +30,7 @@
     cursor: pointer;
 }
 
-/* 3. CONTENEDOR DE LINKS */
+/* Contenedor de links*/
 .nav-links {
     display: flex;
     list-style: none;
@@ -39,10 +39,9 @@
     padding: 0;
 }
 
-/* 4. LOS BOTONES (Preparando el terreno para la burbuja) */
+/* Botones */
 .nav-links a {
     position: relative;
-    /* Necesario para que la burbuja se quede dentro */
     color: #a0a0a0;
     text-decoration: none;
     font-size: 1rem;
@@ -53,11 +52,10 @@
     /* Corta la burbuja si se sale de los bordes del botón */
     transition: color 0.3s ease, transform 0.3s ease;
     z-index: 1;
-    /* Mantiene el texto por encima de la burbuja */
     display: inline-block;
 }
 
-/* 5. LA BURBUJA (Efecto Liquid Glass) */
+/* Burbuja */
 .nav-links a::before {
     content: '';
     position: absolute;
@@ -67,13 +65,11 @@
     width: 0px;
     height: 0px;
 
-    /* --- MAGIA DEL CRISTAL LÍQUIDO --- */
-    /* Fondo semitransparente con un toque de luz */
+    /* Efecto liquid glass*/
     background: linear-gradient(135deg, rgba(56, 65, 185, 0.2), rgba(135, 120, 231, 0.541));
-    /* Desenfoque para que lo de atrás se vea borroso a través de la burbuja */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    /* Un borde super finito y brillante para simular el cristal */
+    /* Borde*/
     border: 1px solid rgba(23, 47, 143, 0.18);
     /* Sombra interior para darle volumen de burbuja */
     box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.1);
@@ -85,22 +81,18 @@
         bottom 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55),
         opacity 0.3s ease;
     opacity: 0;
-    /* Empieza invisible */
 }
 
-/* 6. AL PASAR EL RATÓN (Explosión del Cristal) */
+/* Al pasar el mouse*/
 .nav-links a:hover::before {
     width: 120px;
-    /* Un poco más contenida para que el cristal se vea denso */
     height: 120px;
     bottom: -20px;
     opacity: 1;
-    /* Aparece al crecer */
 }
 
 .nav-links a:hover {
     color: #ffffff;
     transform: translateY(-2px);
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-    /* Hace que el texto brille un poco dentro del cristal */
 }

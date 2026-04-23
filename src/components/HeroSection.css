@@ -144,12 +144,9 @@
     transform: translateY(-3px);
 }
 
-/* =========================================
-   DISEÑO RESPONSIVE (MEDIA QUERIES)
-   Añade esto al final de tu HeroSection.css
-   ========================================= */
+/* Responsive Design */
 
-/* 1. Pantallas medianas (Tablets horizontales y portátiles pequeños) */
+/* Pantallas medianas*/
 @media (max-width: 1024px) {
     .hero-content {
         gap: 3rem;
@@ -170,7 +167,7 @@
     }
 }
 
-/* 2. Pantallas pequeñas (Tablets verticales y móviles grandes) */
+/* Pantallas pequeñas */
 @media (max-width: 768px) {
     .hero-section {
         margin-top: 120px;
@@ -227,38 +224,5 @@
     .hero-buttons {
         justify-content: center;
         /* Centramos los botones */
-    }
-}
-
-/* Responsive design */
-@media (max-width: 480px) {
-    .profile-photo-wrapper {
-        width: 200px;
-        /* Foto más pequeña */
-        height: 200px;
-        min-width: 200px;
-    }
-
-    /* El texto mas pequeño */
-    .hero-text h1 {
-        font-size: 1.8rem;
-    }
-
-    .specialty {
-        font-size: 1rem;
-    }
-
-    .hero-buttons {
-        flex-direction: column;
-        /* Apilamos los botones uno encima del otro */
-        width: 100%;
-        gap: 1rem;
-    }
-
-    .btn-primary,
-    .btn-secondary {
-        width: 100%;
-        /* Los botones ocupan todo el ancho disponible */
-        text-align: center;
     }
 }

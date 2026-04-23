@@ -1,5 +1,4 @@
-/* src/components/ScrollIndicator.css */
-
+/* Contenedor general */
 .scroll-indicator-container {
     display: flex;
     flex-direction: column;
@@ -15,6 +14,7 @@
     position: relative;
 }
 
+/* Al pasar el raton por encima del contenedor */
 .scroll-indicator-container:hover {
     opacity: 1;
     /* Se ilumina al pasar el ratón */
@@ -22,7 +22,7 @@
     /* Baja un poquito */
 }
 
-/* El texto de "Scroll Down" */
+/* Texto de scroll*/
 .scroll-text {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -43,24 +43,21 @@
     border-radius: 4px;
 }
 
-/* La "gota" de luz que cae */
+/* La gota de luz */
 .scroll-dot {
     width: 100%;
     height: 50px;
     background-color: #646cff;
-    /* Tu color de acento azul */
     position: absolute;
     top: -20px;
     /* Empieza escondida arriba */
     border-radius: 4px;
     box-shadow: 0 0 10px #646cff, 0 0 20px #646cff;
-    /* El resplandor */
-
     /* Aquí llamamos a la animación. Dura 2 segundos y es infinita */
     animation: caidaDeLuz 2.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
-/* LA MAGIA DE LA ANIMACIÓN */
+/* Animacion de la caida de luz */
 @keyframes caidaDeLuz {
     0% {
         top: -20px;
