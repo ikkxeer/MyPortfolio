@@ -17,7 +17,43 @@ const misProyectos = [
         tecnologias: ["Java", "SQL"],
         linkRepo: "https://github.com/ikkxeer/Gestor-Alumnos",
         linkDemo: "#",
-        imageLink: "https://edusign.com/es/wp-content/uploads/sites/3/2023/12/software-de-gestion-de-alumnos.png"
+        imageLink: "https://eresmama.com/wp-content/uploads/2019/09/alumnos-levantar-mano-clase.jpg"
+    },
+    {
+        id: 3,
+        titulo: "CraftCoding",
+        descripcion: "Programa desarrollado para fomentar el desarrollo de codigo sin IA, fomentando la creatividad del usuario",
+        tecnologias: ["Python"],
+        linkRepo: "https://github.com/ikkxeer/CraftCoding",
+        linkDemo: "#",
+        imageLink: "https://aurora.edu/_files/img/ai/what-is-ai-800x500.jpg"
+    },
+    {
+        id: 4,
+        titulo: "NE-Launcher",
+        descripcion: "Programa para facilitar el comienzo de proyectos con NodeJS y Express",
+        tecnologias: ["Python"],
+        linkRepo: "https://github.com/ikkxeer/NE-Launcher",
+        linkDemo: "#",
+        imageLink: "https://blog.prosite.dev/content/images/2024/12/NODEJS-API-REST-EXPRESS-1.jpg"
+    },
+    {
+        id: 5,
+        titulo: "MultiTool-Virtualbox",
+        descripcion: "Programa para facilitar la creacion y asignacion de discos de forma masiva en maquinas virtuales",
+        tecnologias: ["Python"],
+        linkRepo: "https://github.com/ikkxeer/MultiTool-Virtualbox",
+        linkDemo: "#",
+        imageLink: "https://www.softzone.es/app/uploads-softzone.es/2020/02/Virtualbox-Logo.jpg"
+    },
+    {
+        id: 6,
+        titulo: "PS-SilentInstallerDetector",
+        descripcion: "Herramienta para detectar la instalacion de programas en modo silencioso",
+        tecnologias: ["Powershell"],
+        linkRepo: "https://github.com/ikkxeer/PS-SilentInstallerDetector",
+        linkDemo: "#",
+        imageLink: "https://static.vecteezy.com/system/resources/previews/005/163/462/non_2x/man-updating-software-on-computer-with-progress-bar-and-installation-software-system-illustration-vector.jpg"
     }
 ];
 

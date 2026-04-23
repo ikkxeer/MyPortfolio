@@ -1,28 +1,31 @@
 import './App.css'
+import AuroraBackground from './components/AuroraBackground'
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
-import ProjectSection from './components/ProjectSection'
 import ScrollIndicator from './components/ScrollIndicator'
 import TechSection from './components/TechSection'
+import ProjectSection from './components/ProjectSection'
 import AnimacionGeneralScroll from './components/AnimacionGeneralScroll'
 
 function App() {
   return (
     <div>
+      <AuroraBackground />
+
       <Navbar />
       <HeroSection />
-      <ScrollIndicator />
 
-      {/* Aquí aplicamos la animación a la sección de tecnologías */}
+      <AnimacionGeneralScroll>
+        <ScrollIndicator />
+      </AnimacionGeneralScroll>
+
       <AnimacionGeneralScroll>
         <TechSection />
       </AnimacionGeneralScroll>
 
-      {/* Aquí aplicamos la animación a la sección de proyectos */}
       <AnimacionGeneralScroll>
         <ProjectSection />
       </AnimacionGeneralScroll>
-
     </div>
   )
 }

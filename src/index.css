@@ -9,7 +9,6 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, rgb(70, 71, 125) 0%, rgb(35, 36, 70) 100%);
   background-attachment: fixed;
   font-family: 'Outfit', system-ui, -apple-system, sans-serif;
   color: #ffffff;
