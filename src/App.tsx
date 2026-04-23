@@ -8,10 +8,12 @@ import ProjectSection from './components/ProjectSection'
 import AnimacionGeneralScroll from './components/AnimacionGeneralScroll'
 import VideosSection from './components/VideosSection'
 import ContactSection from './components/ContactSection'
+import CustomCursor from './components/CustomCursor'
 
 function App() {
   return (
     <div>
+      <CustomCursor />
       <AuroraBackground />
 
       <Navbar />
