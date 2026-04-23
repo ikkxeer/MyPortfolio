@@ -1,5 +1,94 @@
 .contact-section {
-    align-items: center;
-    justify-content: center;
-    display: flex;
+  width: 85%;
+  max-width: 800px;
+  margin: 100px auto 150px auto;
+  text-align: center;
+}
+
+.contact-description {
+  color: #a0a0a0;
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+}
+
+/* Caja del formulario */
+.contact-form {
+  background-color: rgba(30, 30, 30, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Agrupa Nombre y Email uno al lado del otro */
+.input-group {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Estilos de los campos de texto */
+.form-input,
+.form-textarea {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+/* El textarea no se puede redimensionar */
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Al hacer clic en un campo, brilla en azul */
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #646cff;
+  box-shadow: 0 0 15px rgba(100, 108, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Boton de enviar */
+.submit-btn {
+  background-color: #646cff;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+/* Al pasar el raton por encima efecto */
+.submit-btn:hover {
+  background-color: #7c83ff;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(100, 108, 255, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .contact-form {
+    padding: 2rem 1.5rem;
+  }
+
+  .input-group {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
 }
