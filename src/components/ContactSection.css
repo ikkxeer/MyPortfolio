@@ -23,6 +23,7 @@
   flex-direction: column;
   gap: 1.5rem;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
 }
 
 /* Agrupa Nombre y Email uno al lado del otro */
