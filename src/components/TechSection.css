@@ -27,18 +27,13 @@
     mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
-/* La cinta que contiene las tarjetas */
+/* Busca el contenedor de la cinta */
 .slider-track {
     display: flex;
     gap: 2rem;
     width: max-content;
-    padding-right: 2rem;
-    animation: scrollInfinito 30s linear infinite;
-}
-
-/* Si el usuario pasa el ratón por encima de la cinta, se pausa para que pueda leer */
-.slider-track:hover {
-    animation-play-state: paused;
+    animation: scrollInfinito 50s linear infinite;
+    padding: 20px 0;
 }
 
 /* La tarjeta individual de tecnología */
@@ -81,7 +76,6 @@
 
     to {
         /* Al llegar al 50% (final de la primera lista), vuelve al inicio */
-        /* Como la segunda lista es idéntica, el salto es imperceptible */
         transform: translateX(-50%);
     }
 }
