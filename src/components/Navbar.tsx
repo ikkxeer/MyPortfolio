@@ -18,11 +18,12 @@ export default function Navbar() {
             </div>
 
             <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
-                <li><a href="#" className="nav-inicio" onClick={() => setIsOpen(false)}>Inicio</a></li>
-                <li><a href="#tecnologias" className="nav-tecnologias" onClick={() => setIsOpen(false)}>Tecnologías</a></li>
-                <li><a href="#proyectos" className="nav-proyectos" onClick={() => setIsOpen(false)}>Proyectos</a></li>
-                <li><a href="#videos" className="nav-videos" onClick={() => setIsOpen(false)}>Videos</a></li>
-                <li><a href="#contacto" className="nav-contacto" onClick={() => setIsOpen(false)}>Contacto</a></li>
+                <li><a href="/#" className="nav-inicio" onClick={() => setIsOpen(false)}>Inicio</a></li>
+                <li><a href="/sobre-mi" className="nav-sobre-mi" onClick={() => setIsOpen(false)}>Sobre Mí</a></li>
+                <li><a href="/#tecnologias" className="nav-tecnologias" onClick={() => setIsOpen(false)}>Tecnologías</a></li>
+                <li><a href="/#proyectos" className="nav-proyectos" onClick={() => setIsOpen(false)}>Proyectos</a></li>
+                <li><a href="/#videos" className="nav-videos" onClick={() => setIsOpen(false)}>Videos</a></li>
+                <li><a href="/#contacto" className="nav-contacto" onClick={() => setIsOpen(false)}>Contacto</a></li>
             </ul>
         </nav>
     )
