@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css'
 // Importamos lo que siempre estará visible
-import CustomCursor from './components/CustomCursor'
-import AuroraBackground from './components/AuroraBackground'
-import Navbar from './components/Navbar'
+import CustomCursor from './components/Home/CustomCursor'
+import AuroraBackground from './components/Home/AuroraBackground'
+import Navbar from './components/Home/Navbar'
 
 // Importamos las paginas
 import Home from './pages/Home'
