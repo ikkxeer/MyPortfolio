@@ -137,6 +137,28 @@
     clip-path: none;
 }
 
+/* Videos */
+.nav-videos:hover::before {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.15));
+    border-radius: 50px 189px 50px 189px / 25px 150px 25px 102px;
+    clip-path: none;
+}
+
+/* Sobre mi */
+.nav-sobre-mi:hover::before {
+    background: linear-gradient(135deg, rgba(209, 10, 10, 0.05), rgba(185, 14, 28, 0.15));
+    -webkit-border-radius: 10px;
+    -webkit-border-top-left-radius: 50px;
+    -webkit-border-top-right-radius: 50px;
+    -moz-border-radius: 10px;
+    -moz-border-radius-topleft: 50px;
+    -moz-border-radius-topright: 50px;
+    border-radius: 10px;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    clip-path: none;
+}
+
 
 
 /* Responsive */
