@@ -4,6 +4,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import Timeline from "../components/Sobre mi/Timeline";
+import AnimacionGeneralScroll from "../components/Home/AnimacionGeneralScroll";
 
 export default function SobreMi() {
   return (
@@ -49,12 +50,16 @@ export default function SobreMi() {
 
       </section>
       
-      <button className="button-descubrir" onClick={() => window.location.hash = 'trayectoria'}>Vamos a seguir conociéndonos</button>
+      <button className="button-descubrir" onClick={() => window.location.hash = 'trayectoria'}>
+        Vamos a seguir conociéndonos
+      </button>
 
       <hr className="dividiendo-secciones" />
 
-      <Timeline />
-    </div>
+      <AnimacionGeneralScroll>
+        <Timeline />
+      </AnimacionGeneralScroll>
 
+    </div>
   )
 }

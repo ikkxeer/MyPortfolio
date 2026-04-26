@@ -3,7 +3,7 @@ import './Timeline.css';
 const timelineData = [
   {
     year: "2022",
-    title: "Hola mundo",
+    title: "Hola mundo ",
     description: "Mientras que cursaba el grado medio de SMX en la desesperación por encontrar una pasión, gracias a un profesor llamado Raúl, me motivó a comenzar a practicar con el lenguaje Python."
   },
   {
