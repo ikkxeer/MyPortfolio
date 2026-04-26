@@ -43,10 +43,16 @@ export default function SobreMi() {
                   </Box>
               </div>
 
+
           </div>
+
 
       </section>
       
+      <button className="button-descubrir" onClick={() => window.location.hash = 'trayectoria'}>Vamos a seguir conociéndonos</button>
+
+      <hr className="dividiendo-secciones" />
+
       <Timeline />
     </div>
 

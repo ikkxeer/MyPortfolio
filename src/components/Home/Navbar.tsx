@@ -7,7 +7,7 @@ export default function Navbar() {
     return (
         <nav className="navbar">
             <div className="logo">
-                <img src="./logo.png" alt="" width={"60px"} height={"60px"} />
+                <a href="/"><img src="/logo.png" alt="Logo Iker" width={"60px"} height={"60px"} /></a>
             </div>
 
             {/* Boton menu hamburguesa */}

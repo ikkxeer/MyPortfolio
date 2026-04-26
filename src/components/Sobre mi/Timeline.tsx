@@ -3,7 +3,7 @@ import './Timeline.css';
 const timelineData = [
   {
     year: "2022",
-    title: "Mi primer 'Hola Mundo'",
+    title: "Hola mundo",
     description: "Mientras que cursaba el grado medio de SMX en la desesperación por encontrar una pasión, gracias a un profesor llamado Raúl, me motivó a comenzar a practicar con el lenguaje Python."
   },
   {
@@ -13,14 +13,19 @@ const timelineData = [
   },
   {
     year: "2026",
-    title: "Desarrollo Full-Stack",
-    description: "Dando el salto a tecnologías modernas como React y Node.js. Desarrollando proyectos completos, desde la interfaz de usuario hasta la gestión de bases de datos, listo para el mundo profesional."
+    title: "¿Backend? ¿Frontend? ¿Qué es eso?",
+    description: "En el segundo año de DAM comencé a descubrir el mundo del desarrollo web, descubriendo un sinfín de tecnologías y frameworks, entre ellos React que como veis, me ha enganchado un poco."
+  },
+  {
+    year: "Actualidad",
+    title: "¿Hacia dónde voy?",
+    description: "Siendo completamente sincero, estoy confundido, estoy en un momento de duda, de no saber si dar el salto al mundo laboral y comenzar a tener experiencia o ampliar mis estudios yendo de camino a la Universidad, es una de las decisiones mas importantes de mi vida y tendré que tomar una decisión pronto."
   }
 ];
 
 export default function Timeline() {
   return (
-    <div className="timeline-container">
+    <div className="timeline-container" id="trayectoria">
       <h2 className="timeline-main-title">Mi Trayectoria</h2>
 
       <div className="timeline-wrapper">
