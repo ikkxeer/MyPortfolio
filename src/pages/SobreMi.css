@@ -1,82 +1,91 @@
-/* src/components/SobreMi.css */
-
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
 
 .section-about-me {
   width: 100%;
-  min-height: 80vh;
-  padding: 100px 2rem;
+  min-height: 70vh;
+  padding: 120px 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1; 
 }
 
-/* La fila principal que separa Izquierda (Imagen) y Derecha (Texto) */
+/* Contenedor principal */
 .about-content {
   display: flex;
-  flex-direction: row; 
-  align-items: center; 
-  gap: 5rem; 
-  max-width: 1000px;
+  flex-direction: row;
+  align-items: center;
+  gap: 5rem;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
-/* La imagen con tu forma arqueada */
 .my-image {
   width: 350px;
   height: 400px;
   object-fit: cover;
-  flex-shrink: 0; 
-  border-radius: 175px 175px 15px 15px; 
-  transition: transform 0.3s ease, filter 0.3s ease;
+  flex-shrink: 0;
+  border-radius: 175px 175px 15px 15px; /* Arriba redondo, abajo casi recto */
   filter: drop-shadow(0 0 15px rgba(100, 108, 255, 0.15));
+  transition: transform 0.3s ease;
 }
 
 .my-image:hover {
-  transform: scale(1.02) translateY(-5px);
-  filter: drop-shadow(0 0 30px rgba(100, 108, 255, 0.3));
+  transform: translateY(-10px);
 }
 
-/* LA MAGIA DE LA COLUMNA PARA EL TEXTO */
 .about-text-wrapper {
   display: flex;
-  flex-direction: column; /* Fuerza al título a estar encima de la descripción */
-  justify-content: center;
-  text-align: left; 
+  flex-direction: column;
+  text-align: left;
 }
 
 .title {
-  font-family: 'Syne', sans-serif; 
+  font-family: 'Syne', sans-serif;
   font-size: 4.5rem;
   font-weight: 800;
-  margin-bottom: 1.5rem; /* Separación exacta entre el título y el párrafo */
-  line-height: 1;
+  margin-bottom: 1rem;
   background: linear-gradient(135deg, #ffffff, #a0a0a0);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: transparent;
+  line-height: 1.1;
 }
 
 .subtitle {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: #c1c1c1;
   line-height: 1.8;
-  font-weight: 400;
+  max-width: 600px;
+  margin-bottom: 2rem;
 }
 
-/* Responsive para móviles y tablets */
-@media (max-width: 850px) {
+/* Contenedor de iconos */
+.social-container {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.icon-btn {
+  color: #a0a0a0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.icon-btn:hover {
+  transform: scale(1.2) translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Responsive design */
+@media (max-width: 900px) {
   .about-content {
-    flex-direction: column; 
+    flex-direction: column;
     text-align: center;
     gap: 3rem;
   }
 
   .about-text-wrapper {
-    align-items: center; 
-    text-align: center; 
+    align-items: center;
+    text-align: center;
   }
 
   .title {
@@ -86,6 +95,6 @@
   .my-image {
     width: 280px;
     height: 320px;
-    border-radius: 140px 140px 15px 15px; 
+    border-radius: 140px 140px 15px 15px;
   }
 }
