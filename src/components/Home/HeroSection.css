@@ -81,7 +81,27 @@
     padding-left: 15px;
     border-left: 3px solid #646cff;
     white-space: nowrap;
-    display: flex;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* El texto fantasma invisible */
+.ghost-text {
+    visibility: hidden;
+    /* No se ve, pero ocupa todo el espacio físico */
+    display: inline-flex;
+    align-items: center;
+    pointer-events: none;
+}
+
+/* El texto que se anima */
+.typing-text {
+    position: absolute;
+    top: 0;
+    /* Al ser absoluto, ignora el padding, así que se lo sumamos a mano (15px) */
+    left: 15px;
+    height: 100%;
+    display: inline-flex;
     align-items: center;
 }
 
@@ -180,9 +200,7 @@
 
     .hero-content {
         flex-direction: column;
-        /* ¡LA CLAVE! Apila la foto arriba y el texto abajo */
         text-align: center;
-        /* Centramos todo */
         gap: 2.5rem;
     }
 
@@ -207,14 +225,19 @@
 
     .specialty {
         white-space: normal;
-        /* Permitimos que el texto baje a la siguiente línea si no cabe */
         padding-left: 0;
         border-left: none;
-        /* Quitamos la línea lateral... */
         padding-bottom: 8px;
         border-bottom: 3px solid #646cff;
-        /* ...y la ponemos debajo porque está centrado */
-        display: inline-block;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .typing-text {
+        left: 0;
+        width: 100%;
+        justify-content: center;
     }
 
     .bio {
@@ -226,5 +249,15 @@
     .hero-buttons {
         justify-content: center;
         /* Centramos los botones */
+    }
+
+    .specialty {
+        white-space: normal;
+        padding-left: 0;
+        border-left: none;
+        padding-bottom: 8px;
+        border-bottom: 3px solid #646cff;
+        display: inline-block;
+        min-height: 56px;
     }
 }

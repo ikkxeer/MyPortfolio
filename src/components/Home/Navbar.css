@@ -30,6 +30,10 @@
     cursor: pointer;
 }
 
+.logo:hover {
+    transform: scale(1.2);
+}
+
 /* Menu hamburguesa */
 .menu-toggle {
     display: none;

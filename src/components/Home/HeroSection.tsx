@@ -37,10 +37,19 @@ export default function HeroSection() {
                     <h1>Iker Aramburu Muñoz</h1>
 
                     <p className="specialty">
-                        <span className="glowing-tag">&lt;h1&gt;</span>
-                        {text}
-                        {showCursor && <span className="typing-cursor">|</span>}
-                        <span className="glowing-tag">&lt;/h1&gt;</span>
+                        <span className="ghost-text">
+                            <span className="glowing-tag">&lt;h1&gt;</span>
+                            {fullText}
+                            <span>|</span>
+                            <span className="glowing-tag">&lt;/h1&gt;</span>
+                        </span>
+
+                        <span className="typing-text">
+                            <span className="glowing-tag">&lt;h1&gt;</span>
+                            {text}
+                            <span className="typing-cursor" style={{ opacity: showCursor ? 1 : 0 }}>|</span>
+                            <span className="glowing-tag">&lt;/h1&gt;</span>
+                        </span>
                     </p>
 
                     <p className="bio">
