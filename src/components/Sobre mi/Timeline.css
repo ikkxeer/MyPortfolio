@@ -95,6 +95,7 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 1rem;
+  max-width: 60%;
 }
 
 .timeline-language {
@@ -130,5 +131,9 @@
 
   .timeline-main-title {
     font-size: 2.5rem;
+  }
+
+  .languages-container {
+    max-width: 100%;
   }
 }

@@ -11,13 +11,13 @@ const timelineData = [
     year: "2024/25",
     title: "Estudios y Lógica",
     description: "Decidí tomármelo en serio y empecé a formarme con el grado superior de DAM. Me sumergí en la lógica de programación con Java y bases de datos. Sin duda una de las mejores etapas, el comienzo, donde cada nuevo reto es una nueva ilusion para mi.",
-    languages: ['Java', 'SQL', "XML", "XAML", "JSON", "HTML", "CSS", "JAVASCRIPT"]
+    languages: ['Java', 'Javascript', 'SQL', 'XML', 'XAML', 'JSON', 'HTML', 'CSS']
   },
   {
     year: "2026",
     title: "¿Backend? ¿Frontend? ¿Qué es eso?",
     description: "En el segundo año de DAM comencé a descubrir el mundo del desarrollo web, descubriendo un sinfín de tecnologías y frameworks, entre ellos React que como veis, me ha enganchado un poco.",
-    languages: ['React', 'Angular', 'Node.js', 'Express.js', 'SQL', 'HTML', 'CSS']
+    languages: ['React', 'Angular', 'Node.js + Express.js', 'Express.js', 'SQL', 'HTML', 'CSS']
   },
   {
     year: "Actualidad",
