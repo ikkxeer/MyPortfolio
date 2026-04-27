@@ -4,7 +4,7 @@ import TechSection from '../components/Home/TechSection'
 import ProjectSection from '../components/Home/ProjectSection'
 import VideosSection from '../components/Home/VideosSection'
 import ContactSection from '../components/Home/ContactSection'
-import AnimacionGeneralScroll from '../components/Home/AnimacionGeneralScroll'
+import AnimacionGeneralScroll from '../components/All/AnimacionGeneralScroll'
 
 export default function Home() {
   return (
