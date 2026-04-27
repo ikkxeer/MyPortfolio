@@ -1,22 +1,42 @@
 import { useEffect, useRef, useState } from 'react';
 import './CustomCursor.css';
 
+const USER_NAME = "Tú";
+
 export default function CustomCursor() {
-  // Usamos useRef para apuntar a los elementos HTML sin provocar re-renderizados
-  const dotRef = useRef<HTMLDivElement>(null);
-  const outlineRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+
+  // Guardamos las posiciones deseadas (ratón) y actuales (renderizado)
+  const mousePosition = useRef({ x: 0, y: 0 });
+  const currentPosition = useRef({ x: 0, y: 0 });
+
+  const animationFrameId = useRef<number>();
+
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
-    // Rastrea el ratón y mueve el DOM directamente
-    const moveCursor = (e: MouseEvent) => {
-      // translate3d activa la aceleración por hardware
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
+    // Actualiza la posición de destino cuando el ratón se mueve
+    const updateMousePosition = (e: MouseEvent) => {
+      mousePosition.current = { x: e.clientX, y: e.clientY };
+    };
+
+    // Bucle de animación para el suavizado (Interpolación Lineal)
+    const animateCursor = () => {
+      // Factor de suavizado
+      const smoothingFactor = 0.17;
+
+      // Calculamos la nueva posición acercándonos un porcentaje a la del ratón
+      currentPosition.current.x += (mousePosition.current.x - currentPosition.current.x) * smoothingFactor;
+      currentPosition.current.y += (mousePosition.current.y - currentPosition.current.y) * smoothingFactor;
+
+      // Aplicamos la transformación directamente al DOM
+      if (cursorRef.current) {
+        // translate3d activa la aceleración por hardware
+        cursorRef.current.style.transform = `translate3d(${currentPosition.current.x}px, ${currentPosition.current.y}px, 0)`;
       }
-      if (outlineRef.current) {
-        outlineRef.current.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
-      }
+
+      // Solicitamos el siguiente frame
+      animationFrameId.current = requestAnimationFrame(animateCursor);
     };
 
     // Detecta si pasamos por encima de algo clicable
@@ -36,19 +56,31 @@ export default function CustomCursor() {
       }
     };
 
-    window.addEventListener('mousemove', moveCursor);
+    // Event Listeners
+    window.addEventListener('mousemove', updateMousePosition);
     window.addEventListener('mouseover', handleMouseOver);
 
+    // Inicia el bucle de animación
+    animateCursor();
+
+    // Cleanup
     return () => {
-      window.removeEventListener('mousemove', moveCursor);
+      window.removeEventListener('mousemove', updateMousePosition);
       window.removeEventListener('mouseover', handleMouseOver);
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
     };
   }, []);
 
   return (
-    <>
-      <div ref={dotRef} className={`cursor-dot ${isHovering ? 'hovering' : ''}`}></div>
-      <div ref={outlineRef} className={`cursor-outline ${isHovering ? 'hovering' : ''}`}></div>
-    </>
+    <div
+      ref={cursorRef}
+      className={`figma-cursor-container ${isHovering ? 'hovering' : ''}`}
+      style={{ transform: 'translate3d(-100px, -100px, 0)' }}
+    >
+      <div className="cursor-arrow"></div>
+      <div className="cursor-label">{USER_NAME}</div>
+    </div>
   );
 }

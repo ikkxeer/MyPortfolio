@@ -1,6 +1,4 @@
-/* src/components/AuroraBackground.css */
-
-/* El lienzo oscuro que se queda al fondo de todo */
+/* Background */
 .aurora-bg {
     position: fixed;
     top: 0;
@@ -10,9 +8,7 @@
     z-index: -1;
     /* El -1 asegura que se quede detrás de todo el contenido de tu web */
     overflow: hidden;
-    /* Evita que las luces creen barras de scroll si se salen de la pantalla */
     background-color: #050505;
-    /* Un negro casi puro para que resalten los colores */
 }
 
 /* Propiedades compartidas por todas las luces */
@@ -20,13 +16,11 @@
     position: absolute;
     border-radius: 50%;
     filter: blur(120px);
-    /* Esto es lo que convierte un círculo duro en una "mancha" suave */
     opacity: 0.6;
     animation: floatAurora 20s infinite alternate ease-in-out;
-    /* Animación de 20 segundos */
 }
 
-/* Luz 1: Tu azul de acento (Arriba a la izquierda) */
+/* Luz 1 */
 .blob-1 {
     top: -10%;
     left: -10%;
@@ -36,7 +30,7 @@
     animation-delay: 0s;
 }
 
-/* Luz 2: Un tono morado para dar profundidad (Abajo a la derecha) */
+/* Luz 2 */
 .blob-2 {
     bottom: -20%;
     right: -10%;
@@ -44,10 +38,9 @@
     height: 60vw;
     background-color: #9d4edd;
     animation-delay: -5s;
-    /* Empieza la animación en un punto distinto */
 }
 
-/* Luz 3: Azul oscuro (En el centro) */
+/* Luz 3 */
 .blob-3 {
     top: 30%;
     left: 40%;
@@ -57,7 +50,7 @@
     animation-delay: -10s;
 }
 
-/* EL MOTOR DE LA ANIMACIÓN */
+/* Animacion */
 @keyframes floatAurora {
     0% {
         transform: translate(0, 0) scale(1);
@@ -65,12 +58,10 @@
 
     33% {
         transform: translate(5vw, -5vh) scale(1.1);
-        /* Se mueve y crece un poquito */
     }
 
     66% {
         transform: translate(-5vw, 5vh) scale(0.9);
-        /* Cambia de dirección y se encoge un poquito */
     }
 
     100% {

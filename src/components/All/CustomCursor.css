@@ -3,57 +3,62 @@
   cursor: none !important;
 }
 
-.cursor-dot,
-.cursor-outline {
+:root {
+  --cursor-color: #18a0fb;
+  --cursor-text-color: #ffffff;
+}
+
+/* Contenedor principal del cursor */
+.figma-cursor-container {
   position: fixed;
   top: 0;
   left: 0;
   pointer-events: none;
   z-index: 9999;
-  /* Le avisa a la tarjeta gráfica que esto se va a mover mucho */
+  transform: translate(-2px, -2px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   will-change: transform;
 }
 
-/* Punto central */
-.cursor-dot {
-  width: 8px;
-  height: 8px;
-  background-color: #ffffff;
-  border-radius: 50%;
-  transition: opacity 0.2s ease;
+.cursor-arrow {
+  width: 14px;
+  height: 18px;
+  /* Usamos un SVG como imagen de fondo para la flecha */
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='18' viewBox='0 0 14 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L13 10L1 17L1 1Z' fill='%2318A0FB' stroke='black' stroke-width='0.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  margin-bottom: 2px;
 }
 
-/* Anillo exterior */
-.cursor-outline {
-  width: 40px;
-  height: 40px;
-  border: 2px solid rgba(100, 108, 255, 0.6);
-  background-color: rgba(100, 108, 255, 0.1);
-  border-radius: 50%;
-  z-index: 9998;
-  transition: transform 0.15s ease-out, background-color 0.2s ease, width 0.2s ease, height 0.2s ease;
+.cursor-label {
+  background-color: var(--cursor-color);
+  color: var(--cursor-text-color);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  transform-origin: top left;
 }
 
-/* Efectos al pasar sobre enlaces */
-.cursor-dot.hovering {
-  opacity: 0;
+/* Cuando pasamos por encima de algo clicable */
+.figma-cursor-container.hovering .cursor-label {
+  /* Cambia el color */
+  background-color: #0077c9;
+  /* Escala ligeramente la etiqueta */
+  transform: scale(1.1);
 }
 
-.cursor-outline.hovering {
-  width: 60px;
-  height: 60px;
-  background-color: rgba(100, 108, 255, 0.3);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  border-color: rgba(100, 108, 255, 0.8);
-}
-
-/* Para móviles vuelve el cursor normal */
+/* Responsive (vuelve el raton original) */
 @media (pointer: coarse) {
-  .cursor-dot,
-  .cursor-outline {
+  .figma-cursor-container {
     display: none !important;
   }
+
   * {
     cursor: auto !important;
   }
