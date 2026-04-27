@@ -20,7 +20,7 @@ export default function CustomCursor() {
       mousePosition.current = { x: e.clientX, y: e.clientY };
     };
 
-    // Bucle de animación para el suavizado (Interpolación Lineal)
+    // Bucle de animación para el suavizado
     const animateCursor = () => {
       // Factor de suavizado
       const smoothingFactor = 0.17;
