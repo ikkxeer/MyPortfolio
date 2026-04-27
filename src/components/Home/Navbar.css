@@ -30,8 +30,16 @@
     cursor: pointer;
 }
 
+.logo {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+        filter 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
 .logo:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 10px rgba(100, 108, 255, 0.6));
 }
 
 /* Menu hamburguesa */
