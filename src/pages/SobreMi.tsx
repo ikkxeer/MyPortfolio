@@ -5,6 +5,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import Timeline from "../components/Sobre mi/Timeline";
 import AnimacionGeneralScroll from "../components/All/AnimacionGeneralScroll";
+import SoftSkills from "../components/Sobre mi/SoftSkills";
 
 export default function SobreMi() {
   return (
@@ -58,6 +59,12 @@ export default function SobreMi() {
 
       <AnimacionGeneralScroll>
         <Timeline />
+      </AnimacionGeneralScroll>
+
+      <hr className="dividiendo-secciones" />
+
+      <AnimacionGeneralScroll>
+        <SoftSkills />
       </AnimacionGeneralScroll>
 
     </div>
