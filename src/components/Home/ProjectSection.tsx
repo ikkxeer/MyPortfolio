@@ -4,7 +4,7 @@ const misProyectos = [
     {
         id: 1,
         titulo: "PSCacheCleaner",
-        descripcion: "Herramienta de limpieza de caché desarrollada con Powershell para Windows",
+        descripcion: "Eina de neteja de memòria cau (caché) desenvolupada amb Powershell per a Windows",
         tecnologias: ["Powershell"],
         linkRepo: "https://github.com/ikkxeer/PSCacheCleaner",
         linkDemo: "",
@@ -12,8 +12,8 @@ const misProyectos = [
     },
     {
         id: 2,
-        titulo: "Gestor de alumnos",
-        descripcion: "Proyecto desarrollado en Java para la gestión de alumnos en una Base de datos en SQL",
+        titulo: "Gestor d'alumnes",
+        descripcion: "Projecte desenvolupat en Java per a la gestió d'alumnes en una Base de dades SQL",
         tecnologias: ["Java", "SQL"],
         linkRepo: "https://github.com/ikkxeer/Gestor-Alumnos",
         linkDemo: "#",
@@ -22,7 +22,7 @@ const misProyectos = [
     {
         id: 3,
         titulo: "CraftCoding",
-        descripcion: "Programa desarrollado para fomentar el desarrollo de codigo sin IA, fomentando la creatividad del usuario",
+        descripcion: "Programa desenvolupat per fomentar el desenvolupament de codi sense IA, fomentant la creativitat de l'usuari",
         tecnologias: ["Python"],
         linkRepo: "https://github.com/ikkxeer/CraftCoding",
         linkDemo: "#",
@@ -31,7 +31,7 @@ const misProyectos = [
     {
         id: 4,
         titulo: "NE-Launcher",
-        descripcion: "Programa para facilitar el comienzo de proyectos con NodeJS y Express",
+        descripcion: "Programa per facilitar l'inici de projectes amb NodeJS i Express",
         tecnologias: ["Python"],
         linkRepo: "https://github.com/ikkxeer/NE-Launcher",
         linkDemo: "#",
@@ -40,7 +40,7 @@ const misProyectos = [
     {
         id: 5,
         titulo: "MultiTool-Virtualbox",
-        descripcion: "Programa para facilitar la creacion y asignacion de discos de forma masiva en maquinas virtuales",
+        descripcion: "Programa per facilitar la creació i assignació de discos de forma massiva en màquines virtuals",
         tecnologias: ["Python"],
         linkRepo: "https://github.com/ikkxeer/MultiTool-Virtualbox",
         linkDemo: "#",
@@ -49,7 +49,7 @@ const misProyectos = [
     {
         id: 6,
         titulo: "PS-SilentInstallerDetector",
-        descripcion: "Herramienta para detectar la instalacion de programas en modo silencioso",
+        descripcion: "Eina per detectar la instal·lació de programes en mode silenciós",
         tecnologias: ["Powershell"],
         linkRepo: "https://github.com/ikkxeer/PS-SilentInstallerDetector",
         linkDemo: "#",
@@ -60,7 +60,7 @@ const misProyectos = [
 export default function ProjectSection() {
     return (
         <section id="proyectos" className="projects-section">
-            <h2 className="section-title">Proyectos Personales</h2>
+            <h2 className="section-title">Projectes Personals</h2>
             <div className="projects-grid">
 
                 {/* Mapeado por cada elemento dentro de la lista */}
@@ -83,7 +83,7 @@ export default function ProjectSection() {
 
                             <div className="project-links">
                                 <a href={p.linkRepo} className="link-btn">Github</a>
-                                <a href={p.linkDemo} className="link-btn primary-link">Ver demo</a>
+                                <a href={p.linkDemo} className="link-btn primary-link">Veure demo</a>
                             </div>
                         </div>
 

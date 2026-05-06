@@ -7,7 +7,7 @@ export default function HeroSection() {
     const [showCursor, setShowCursor] = useState(true)
 
     // Texto a escribir
-    const fullText = "Desarrollador de aplicaciones multiplataforma"
+    const fullText = "Desenvolupador d'aplicacions multiplataforma"
 
     // Efecto para ir añadiendo letra por letra al cargar
     useEffect(() => {
@@ -16,7 +16,7 @@ export default function HeroSection() {
             setText(fullText.slice(0, index + 1));
             index++;
 
-            // Cuando termina la frase, limpiamos el intervalo
+            // Al finalizar la frase, el intervalo de tiempo se detiene
             if (index >= fullText.length) {
                 clearInterval(interval);
                 setShowCursor(false);
@@ -53,11 +53,11 @@ export default function HeroSection() {
                     </p>
 
                     <p className="bio">
-                        ¡Hola! Soy Iker. Me encanta la tecnología y todo lo relacionado con el desarrollo de software. Me gusta crear soluciones innovadoras y estoy en constante aprendizaje para mejorar mis habilidades.
+                        Hola! Sóc l'Iker. M'encanta la tecnologia i tot el que està relacionat amb el desenvolupament de programari. M'agrada crear solucions innovadores i estic en aprenentatge constant per millorar les meves habilitats.
                     </p>
 
                     <div className="hero-buttons">
-                        <a href="#" className="btn-primary">Descargar CV</a>
+                        <a href="#" className="btn-primary">Descarregar CV</a>
                         <a href="#contacto" className="btn-secondary">Contactar</a>
                     </div>
                 </div>

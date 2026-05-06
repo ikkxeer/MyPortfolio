@@ -3,26 +3,26 @@ import './Timeline.css';
 const timelineData = [
   {
     year: "2022",
-    title: "Hola mundo ",
-    description: "Mientras que cursaba el grado medio de SMX, me sentí muy estancado, todo eso cambió gracias a mi profesor Raul López, el cual me motivó a comenzar a programar en Python, proponiendome nuevos retos y preparandome para el grado superior con unas bases fundamentales, a su vez, donde hice las practicas de grado medio, Marc Vidal mi tutor de practicas en aquel entonces, me motivó también enseñandome a programar en Powershell y desarrollando scripts de automatización para la empresa de entonces los cuales nos ahorraron mucho tiempo de trabajo.",
+    title: "Hola món ",
+    description: "Mentre cursava el grau mitjà de SMX, em vaig sentir molt estancat. Tot això va canviar gràcies al meu professor Raul López, el qual em va motivar a començar a programar en Python, proposant-me nous reptes i preparant-me per al grau superior amb unes bases fonamentals. Al seu torn, on vaig fer les pràctiques de grau mitjà, Marc Vidal, el meu tutor de pràctiques en aquell moment, em va motivar també ensenyant-me a programar en Powershell i desenvolupant scripts d'automatització per a l'empresa de llavors els quals ens van estalviar molt de temps de treball.",
     languages: ['Python', 'Powershell']
   },
   {
     year: "2024/25",
-    title: "Estudios y Lógica",
-    description: "Decidí tomármelo en serio y empecé a formarme con el grado superior de DAM. Me sumergí en la lógica de programación con Java y bases de datos. Sin duda una de las mejores etapas, el comienzo, donde cada nuevo reto es una nueva ilusion para mi.",
+    title: "Estudis i Lògica",
+    description: "Vaig decidir prendre-m'ho seriosament i vaig començar a formar-me amb el grau superior de DAM. Em vaig submergir en la lògica de programació amb Java i bases de dades. Sens dubte una de les millors etapes, el començament, on cada nou repte és una nova il·lusió per a mi.",
     languages: ['Java', 'Javascript', 'SQL', 'XML', 'XAML', 'JSON', 'HTML', 'CSS']
   },
   {
     year: "2026",
-    title: "¿Backend? ¿Frontend? ¿Qué es eso?",
-    description: "En el segundo año de DAM comencé a descubrir el mundo del desarrollo web, descubriendo un sinfín de tecnologías y frameworks, entre ellos React que como veis, me ha enganchado un poco.",
+    title: "¿Backend? ¿Frontend? Què és això?",
+    description: "En el segon any de DAM vaig començar a descobrir el món del desenvolupament web, descobrint una infinitat de tecnologies i frameworks, entre ells React que com veieu, m'ha enganxat una mica.",
     languages: ['React', 'Angular', 'Node.js + Express.js', 'Express.js', 'SQL', 'HTML', 'CSS']
   },
   {
-    year: "Actualidad",
-    title: "¿Hacia dónde voy?",
-    description: "Siendo completamente sincero, estoy confundido, estoy en un momento de duda, de no saber si dar el salto al mundo laboral y comenzar a tener experiencia o ampliar mis estudios yendo de camino a la Universidad, es una de las decisiones mas importantes de mi vida y tendré que tomar una decisión pronto.",
+    year: "Actualitat",
+    title: "Cap a on vaig?",
+    description: "Sent completament sincer, estic confós, estic en un moment de dubte, de no saber si fer el salt al món laboral i començar a tenir experiència o ampliar els meus estudis anant de camí a la Universitat. És una de les decisions més importants de la meva vida i hauré de prendre una decisió aviat.",
     languages: []
   }
 ];
@@ -30,7 +30,7 @@ const timelineData = [
 export default function Timeline() {
   return (
     <div className="timeline-container" id="trayectoria">
-      <h2 className="timeline-main-title">Mi Trayectoria</h2>
+      <h2 className="timeline-main-title">La meva Trajectòria</h2>
 
       <div className="timeline-wrapper">
         {timelineData.map((item, index) => (

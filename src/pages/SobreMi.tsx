@@ -18,10 +18,10 @@ export default function SobreMi() {
           </div>
 
           <div className="about-text-wrapper">
-            <h1 className="title">Sobre mí</h1>
+            <h1 className="title">Sobre mi</h1>
 
             <p className="subtitle">
-              Bueno, ya que os habéis interesado un poco, os voy a contar un poco más sobre mí y a qué viene todo mi interés por la informática y la tecnología en general, aunque no soy un genio, soy un apasionado...
+              Bé, ja que us heu interessat una mica, us explicaré una mica més sobre mi i d'on ve tot el meu interès per la informàtica i la tecnologia en general. Encara que no sóc un geni, sóc un apassionat...
             </p>
 
             <Box className="social-container">
@@ -52,7 +52,7 @@ export default function SobreMi() {
       </section>
 
       <button className="button-descubrir" onClick={() => window.location.hash = 'trayectoria'}>
-        Vamos a seguir conociéndonos
+        Anem a seguir coneixent-nos
       </button>
 
       <hr className="dividiendo-secciones" />

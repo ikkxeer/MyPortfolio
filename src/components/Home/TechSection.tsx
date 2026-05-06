@@ -38,7 +38,7 @@ const tecnologias = [
 export default function TechSection() {
     return (
         <section className="tech-section" id="tecnologias">
-            <h2 className="section-title">Mis Tecnologias Favoritas</h2>
+            <h2 className="section-title">Les Meves Tecnologies Favorites</h2>
 
             <div className="slider-container">
                 <div className="slider-track">

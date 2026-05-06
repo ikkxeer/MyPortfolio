@@ -5,9 +5,9 @@ import CustomCursor from './components/All/CustomCursor'
 import AuroraBackground from './components/All/AuroraBackground'
 import Navbar from './components/Home/Navbar'
 
-// Importamos las paginas
 import Home from './pages/Home'
 import SobreMi from './pages/SobreMi'
+import Asignaturas from './pages/Asignaturas'
 
 function App() {
   return (
@@ -22,6 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sobre-mi" element={<SobreMi />} />
+        <Route path="/asignaturas" element={<Asignaturas />} />
       </Routes>
 
     </BrowserRouter>

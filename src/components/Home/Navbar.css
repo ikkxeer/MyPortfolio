@@ -171,6 +171,13 @@
     clip-path: none;
 }
 
+/* Asignaturas */
+.nav-asignaturas:hover::before {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.3));
+    clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
+    border-radius: 5px;
+}
+
 
 
 /* Responsive */
