@@ -1,3 +1,4 @@
+import { useLanguage } from '../../context/LanguageContext';
 import './TechSection.css';
 
 const tecnologias = [
@@ -27,7 +28,7 @@ const tecnologias = [
     },
     {
         nombre: "HTML",
-        logo: "https://cdn.iconscout.com/icon/free/png-256/free-html-5-icon-svg-download-png-1175208.png"
+        logo: "https://cdn-iconscout.com/icon/free/png-256/free-html-5-icon-svg-download-png-1175208.png"
     },
     {
         nombre: "CSS",
@@ -36,9 +37,11 @@ const tecnologias = [
 ]
 
 export default function TechSection() {
+    const { t } = useLanguage();
+
     return (
         <section className="tech-section" id="tecnologias">
-            <h2 className="section-title">Les Meves Tecnologies Favorites</h2>
+            <h2 className="section-title">{t('tech', 'title')}</h2>
 
             <div className="slider-container">
                 <div className="slider-track">

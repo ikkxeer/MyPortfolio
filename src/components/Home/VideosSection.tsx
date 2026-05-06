@@ -1,24 +1,28 @@
 import './VideosSection.css';
 // 👇 CAMBIAMOS ESTA LÍNEA (Le quitamos el /youtube) 👇
 import ReactPlayer from 'react-player';
+import { useLanguage } from '../../context/LanguageContext';
 
-const videos = [
+const getVideos = (t: any) => [
     {
         id: 1,
-        title: 'Vídeo 1',
+        title: t('videos', 'v1'),
         url: 'https://www.youtube.com/watch?v=X5QCpFAddFM'
     },
     {
         id: 2,
-        title: 'Vídeo 2',
+        title: t('videos', 'v2'),
         url: 'https://www.youtube.com/watch?v=X5QCpFAddFM'
     }
 ]
 
 export default function VideosSection() {
+    const { t } = useLanguage();
+    const videos = getVideos(t);
+
     return (
         <section className='videos-section' id='videos'>
-            <h2 className='section-title'>Vídeos</h2>
+            <h2 className='section-title'>{t('videos', 'title')}</h2>
 
             <div className="video-container">
                 {videos.map((video) => (

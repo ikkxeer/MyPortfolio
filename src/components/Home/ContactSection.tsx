@@ -3,12 +3,15 @@ import { Box, IconButton } from "@mui/material";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function ContactSection() {
+    const { t } = useLanguage();
+
     return (
         <section className="contact-section" id="contacto">
-            <h2 className="section-title">Contacte</h2>
-            <p className='contact-description'>Tens un projecte en ment? Escriu-me i parlem!</p>
+            <h2 className="section-title">{t('contact', 'title')}</h2>
+            <p className='contact-description'>{t('contact', 'subtitle')}</p>
 
             <form action="https://formspree.io/f/ID_EN_TEORIA" method="POST" className="contact-form">
                 <div className="input-group">
@@ -16,14 +19,14 @@ export default function ContactSection() {
                         type="text"
                         name="nombre"
                         className="form-input"
-                        placeholder="Introdueix el teu nom"
+                        placeholder={t('contact', 'namePlaceholder')}
                         required
                     />
                     <input
                         type="email"
                         name="email"
                         className="form-input"
-                        placeholder="Introdueix el teu email"
+                        placeholder={t('contact', 'emailPlaceholder')}
                         required
                     />
                 </div>
@@ -31,13 +34,13 @@ export default function ContactSection() {
                 <textarea
                     name="mensaje"
                     className="form-textarea"
-                    placeholder="En què et puc ajudar?"
+                    placeholder={t('contact', 'messagePlaceholder')}
                     rows={5}
                     required
                 ></textarea>
 
                 <button type="submit" className="submit-btn">
-                    Enviar Missatge
+                    {t('contact', 'send')}
                 </button>
 
             </form>

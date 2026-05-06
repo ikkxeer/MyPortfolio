@@ -6,8 +6,11 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import Timeline from "../components/Sobre mi/Timeline";
 import AnimacionGeneralScroll from "../components/All/AnimacionGeneralScroll";
 import SoftSkills from "../components/Sobre mi/SoftSkills";
+import { useLanguage } from '../context/LanguageContext';
 
 export default function SobreMi() {
+  const { t } = useLanguage();
+
   return (
     <div>
       <section className="section-about-me" id="sobre-mi">
@@ -18,10 +21,10 @@ export default function SobreMi() {
           </div>
 
           <div className="about-text-wrapper">
-            <h1 className="title">Sobre mi</h1>
+            <h1 className="title">{t('sobreMi', 'title')}</h1>
 
             <p className="subtitle">
-              Bé, ja que us heu interessat una mica, us explicaré una mica més sobre mi i d'on ve tot el meu interès per la informàtica i la tecnologia en general. Encara que no sóc un geni, sóc un apassionat...
+              {t('sobreMi', 'subtitle')}
             </p>
 
             <Box className="social-container">
@@ -52,7 +55,7 @@ export default function SobreMi() {
       </section>
 
       <button className="button-descubrir" onClick={() => window.location.hash = 'trayectoria'}>
-        Anem a seguir coneixent-nos
+        {t('sobreMi', 'button')}
       </button>
 
       <hr className="dividiendo-secciones" />

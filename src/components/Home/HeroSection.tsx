@@ -1,17 +1,21 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
 import './HeroSection.css'
 
 export default function HeroSection() {
     // Estados del texto y del cursor
     const [text, setText] = useState('')
     const [showCursor, setShowCursor] = useState(true)
+    const { t } = useLanguage()
 
     // Texto a escribir
-    const fullText = "Desenvolupador d'aplicacions multiplataforma"
+    const fullText = t('hero', 'developer')
 
     // Efecto para ir añadiendo letra por letra al cargar
     useEffect(() => {
         let index = 0;
+        setText('');
+        setShowCursor(true);
         const interval = setInterval(() => {
             setText(fullText.slice(0, index + 1));
             index++;
@@ -24,7 +28,7 @@ export default function HeroSection() {
         }, 70);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [fullText]);
 
     return (
         <section className="hero-section">
@@ -53,12 +57,12 @@ export default function HeroSection() {
                     </p>
 
                     <p className="bio">
-                        Hola! Sóc l'Iker. M'encanta la tecnologia i tot el que està relacionat amb el desenvolupament de programari. M'agrada crear solucions innovadores i estic en aprenentatge constant per millorar les meves habilitats.
+                        {t('hero', 'bio')}
                     </p>
 
                     <div className="hero-buttons">
-                        <a href="#" className="btn-primary">Descarregar CV</a>
-                        <a href="#contacto" className="btn-secondary">Contactar</a>
+                        <a href="#" className="btn-primary">{t('hero', 'downloadCV')}</a>
+                        <a href="#contacto" className="btn-secondary">{t('hero', 'contact')}</a>
                     </div>
                 </div>
             </div>

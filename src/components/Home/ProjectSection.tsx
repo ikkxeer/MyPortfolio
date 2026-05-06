@@ -1,10 +1,11 @@
+import { useLanguage } from '../../context/LanguageContext';
 import './ProjectSection.css';
 
-const misProyectos = [
+const getProyectos = (t: any) => [
     {
         id: 1,
         titulo: "PSCacheCleaner",
-        descripcion: "Eina de neteja de memòria cau (caché) desenvolupada amb Powershell per a Windows",
+        descripcion: t('projects', 'p1_desc'),
         tecnologias: ["Powershell"],
         linkRepo: "https://github.com/ikkxeer/PSCacheCleaner",
         linkDemo: "",
@@ -12,8 +13,8 @@ const misProyectos = [
     },
     {
         id: 2,
-        titulo: "Gestor d'alumnes",
-        descripcion: "Projecte desenvolupat en Java per a la gestió d'alumnes en una Base de dades SQL",
+        titulo: t('projects', 'p2_title'),
+        descripcion: t('projects', 'p2_desc'),
         tecnologias: ["Java", "SQL"],
         linkRepo: "https://github.com/ikkxeer/Gestor-Alumnos",
         linkDemo: "#",
@@ -22,7 +23,7 @@ const misProyectos = [
     {
         id: 3,
         titulo: "CraftCoding",
-        descripcion: "Programa desenvolupat per fomentar el desenvolupament de codi sense IA, fomentant la creativitat de l'usuari",
+        descripcion: t('projects', 'p3_desc'),
         tecnologias: ["Python"],
         linkRepo: "https://github.com/ikkxeer/CraftCoding",
         linkDemo: "#",
@@ -31,7 +32,7 @@ const misProyectos = [
     {
         id: 4,
         titulo: "NE-Launcher",
-        descripcion: "Programa per facilitar l'inici de projectes amb NodeJS i Express",
+        descripcion: t('projects', 'p4_desc'),
         tecnologias: ["Python"],
         linkRepo: "https://github.com/ikkxeer/NE-Launcher",
         linkDemo: "#",
@@ -40,7 +41,7 @@ const misProyectos = [
     {
         id: 5,
         titulo: "MultiTool-Virtualbox",
-        descripcion: "Programa per facilitar la creació i assignació de discos de forma massiva en màquines virtuals",
+        descripcion: t('projects', 'p5_desc'),
         tecnologias: ["Python"],
         linkRepo: "https://github.com/ikkxeer/MultiTool-Virtualbox",
         linkDemo: "#",
@@ -49,7 +50,7 @@ const misProyectos = [
     {
         id: 6,
         titulo: "PS-SilentInstallerDetector",
-        descripcion: "Eina per detectar la instal·lació de programes en mode silenciós",
+        descripcion: t('projects', 'p6_desc'),
         tecnologias: ["Powershell"],
         linkRepo: "https://github.com/ikkxeer/PS-SilentInstallerDetector",
         linkDemo: "#",
@@ -58,9 +59,12 @@ const misProyectos = [
 ];
 
 export default function ProjectSection() {
+    const { t } = useLanguage();
+    const misProyectos = getProyectos(t);
+
     return (
         <section id="proyectos" className="projects-section">
-            <h2 className="section-title">Projectes Personals</h2>
+            <h2 className="section-title">{t('projects', 'title')}</h2>
             <div className="projects-grid">
 
                 {/* Mapeado por cada elemento dentro de la lista */}
@@ -83,7 +87,7 @@ export default function ProjectSection() {
 
                             <div className="project-links">
                                 <a href={p.linkRepo} className="link-btn">Github</a>
-                                <a href={p.linkDemo} className="link-btn primary-link">Veure demo</a>
+                                <a href={p.linkDemo} className="link-btn primary-link">{t('projects', 'demo')}</a>
                             </div>
                         </div>
 
