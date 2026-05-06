@@ -6,6 +6,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import Timeline from "../components/Sobre mi/Timeline";
 import AnimacionGeneralScroll from "../components/All/AnimacionGeneralScroll";
 import SoftSkills from "../components/Sobre mi/SoftSkills";
+import Experiencia from "../components/Sobre mi/Experiencia";
 import { useLanguage } from '../context/LanguageContext';
 
 export default function SobreMi() {
@@ -68,6 +69,12 @@ export default function SobreMi() {
 
       <AnimacionGeneralScroll>
         <SoftSkills />
+      </AnimacionGeneralScroll>
+
+      <hr className="dividiendo-secciones" />
+
+      <AnimacionGeneralScroll>
+        <Experiencia />
       </AnimacionGeneralScroll>
 
     </div>
