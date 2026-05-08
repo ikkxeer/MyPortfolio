@@ -84,6 +84,25 @@ export const translations = {
       a4_desc: "Programació multifil i multiprocés, comunicació mitjançant sòcols (sockets), serveis en xarxa i protocols de seguretat i criptografia.",
       a5_title: "OPT. Desenvolupament Web Entorn Client",
       a5_desc: "Creació d'aplicacions web, frameworks de frontend (com React o Angular), manipulació del DOM i consum d'APIs."
+    },
+    experiencia: {
+      titulo: "Experiència",
+      exp1_empresa: "NARGY",
+      exp1_fecha: "gen. 2026 - actualitat",
+      exp1_puesto: "Acomodador",
+      exp1_desc: "Treball en equip i comunicació directa en esdeveniments presencials.",
+      exp2_empresa: "FLUGE AUDIOVISUALES",
+      exp2_fecha: "set. 2025 - maig 2026",
+      exp2_puesto: "Estudiant en pràctiques",
+      exp2_desc: "Especialització en Clonezilla, virtualització de sistemes operatius i suport tècnic audiovisual.",
+      exp3_empresa: "Col·legi Oficial de Metges de Barcelona",
+      exp3_fecha: "jul. 2024 - ago. 2024",
+      exp3_puesto: "Administrador de sistemes i xarxes",
+      exp3_desc: "Administració d'entorns Ubuntu i virtualització de sistemes operatius en entorn corporatiu.",
+      exp4_empresa: "Col·legi Oficial de Metges de Barcelona",
+      exp4_fecha: "juny 2023 - març 2024",
+      exp4_puesto: "Estudiant en pràctiques",
+      exp4_desc: "Suport tècnic amb enfocament en Windows Server i gestió de sistemes d'impressió."
     }
   },
   en: {
@@ -171,6 +190,25 @@ export const translations = {
       a4_desc: "Multithreaded and multiprocess programming, socket communication, network services, and security and cryptography protocols.",
       a5_title: "OPT. Client-Side Web Development",
       a5_desc: "Creation of web applications, frontend frameworks (like React or Angular), DOM manipulation, and API consumption."
+    },
+    experiencia: {
+      titulo: "Experience",
+      exp1_empresa: "NARGY",
+      exp1_fecha: "Jan. 2026 - present",
+      exp1_puesto: "Usher",
+      exp1_desc: "Teamwork and direct communication at live events.",
+      exp2_empresa: "FLUGE AUDIOVISUALES",
+      exp2_fecha: "Sept. 2025 - May 2026",
+      exp2_puesto: "Intern Student",
+      exp2_desc: "Specialization in Clonezilla, OS virtualization, and audiovisual technical support.",
+      exp3_empresa: "Col·legi Oficial de Metges de Barcelona",
+      exp3_fecha: "Jul. 2024 - Aug. 2024",
+      exp3_puesto: "Systems and Network Administrator",
+      exp3_desc: "Administration of Ubuntu environments and OS virtualization in a corporate setting.",
+      exp4_empresa: "Col·legi Oficial de Metges de Barcelona",
+      exp4_fecha: "Jun. 2023 - Mar. 2024",
+      exp4_puesto: "Intern Student",
+      exp4_desc: "Technical support with a focus on Windows Server and print systems management."
     }
   }
 };
