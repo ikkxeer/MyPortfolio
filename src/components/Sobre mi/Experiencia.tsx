@@ -19,6 +19,14 @@ export default function Experiencia() {
                             <span className="empresa">{t("experiencia", "exp4_empresa")}</span>
                             <span className="experiencia-year">{t("experiencia", "exp4_fecha")}</span>
                             <h3 className="experiencia-title">{t("experiencia", "exp4_puesto")}</h3>
+                            <p className="skills-learned">Skills aprendidas</p>
+                            <div className="skills">
+                                <p>Gestión bajo presión</p>
+                                <p>Comunicación</p>
+                                <p>Trabajo en equipo</p>
+                                <p>Responsabilidad</p>
+                                <p>Organización</p>
+                            </div>
                             <p className="experiencia-description">
                                 {t("experiencia", "exp4_desc")}
                             </p>
@@ -35,6 +43,14 @@ export default function Experiencia() {
                             <p className="experiencia-description">
                                 {t("experiencia", "exp3_desc")}
                             </p>
+                            <p className="skills-learned">Skills aprendidas</p>
+                            <div className="skills">
+                                <p>Gestión bajo presión</p>
+                                <p>Comunicación</p>
+                                <p>Trabajo en equipo</p>
+                                <p>Responsabilidad</p>
+                                <p>Organización</p>
+                            </div>
                         </div>
                     </div>
 
@@ -48,6 +64,13 @@ export default function Experiencia() {
                             <p className="experiencia-description">
                                 {t("experiencia", "exp2_desc")}
                             </p>
+                            <p className="skills-learned">Skills aprendidas</p>
+                            <div className="skills">
+                                <p>Clonezilla</p>
+                                <p>Virtualización de sistemas operativos</p>
+                                <p>Automatización</p>
+                                <p>Puente de depuración de Android</p>
+                            </div>
                         </div>
                     </div>
 
@@ -61,6 +84,14 @@ export default function Experiencia() {
                             <p className="experiencia-description">
                                 {t("experiencia", "exp1_desc")}
                             </p>
+                            <p className="skills-learned">Skills aprendidas</p>
+                            <div className="skills">
+                                <p>Ubuntu</p>
+                                <p>Virtualización de sistemas operativos</p>
+                                <p>Redes</p>
+                                <p>Mantenimiento de equipos informáticos</p>
+                                <p>Soporte técnico</p>
+                            </div>
                         </div>
                     </div>
                 </div>
