@@ -76,6 +76,40 @@
     }
 }
 
+.project-card.incite-animation {
+    /* Ejecuta la animación en bucle infinito cada 3 segundos */
+    animation: pulseIncite 3s ease-in-out infinite;
+}
+
+/* Desfasamos un poco la animación según la posición para que no pulsen todas rígidamente al mismo milisegundo */
+.project-card.incite-animation:nth-child(even) {
+    animation-delay: 0.5s;
+}
+
+@keyframes pulseIncite {
+    0% {
+        transform: translateY(0);
+        border-color: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    50% {
+        /* Se eleva sutilmente (menos que el hover real) y genera un leve resplandor morado */
+        transform: translateY(-4px);
+        border-color: rgba(100, 108, 255, 0.25);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(100, 108, 255, 0.08);
+    }
+    100% {
+        transform: translateY(0);
+        border-color: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Si el usuario pasa activamente el ratón por encima, cancelamos temporalmente los keyframes para que mande el estilo :hover original */
+.project-card.incite-animation:hover {
+    animation: none;
+}
+
 /* Puntito al final de la linea */
 .scroll-end-dot {
     width: 6px;

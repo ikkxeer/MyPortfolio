@@ -25,12 +25,18 @@ export const translations = {
       title: "Projectes Personals",
       demo: "Veure demo",
       p1_desc: "Eina de neteja de memòria cau (caché) desenvolupada amb Powershell per a Windows",
+      p1_desc_long: "PSCacheCleaner és un script en PowerShell pensat per optimitzar Windows de forma ràpida: neteja carpetes temporals, caché d'aplicacions, DNS, la Store i altres residus del sistema. Inclou barra de progres, elevació a administrador i opcions com actualitzar amb Winget o Windows Update. Va néixer de la necessitat d'automatitzar tasques repetitives que feia manualment en entorns de suport.",
       p2_title: "Gestor d'alumnes",
       p2_desc: "Projecte desenvolupat en Java per a la gestió d'alumnes en una Base de dades SQL",
+      p2_desc_long: "Aplicació de consola i lògica de negoci en Java connectada a una base de dades SQL. Permet donar d'alta, consultar, modificar i eliminar alumnes, organitzant les dades de forma estructurada. El projecte posa en pràctica POO, consultes parametritzades i el disseny d'un petit sistema de gestió educativa.",
       p3_desc: "Programa desenvolupat per fomentar el desenvolupament de codi sense IA, fomentant la creativitat de l'usuari",
+      p3_desc_long: "CraftCoding és una proposta per practicar programació sense dependre d'assistents d'IA. Ofereix reptes i un entorn que anima a pensar la solució, experimentar i aprendre del procés. L'objectiu és reforçar el raonament lògic i la creativitat del desenvolupador abans de buscar respostes automàtiques.",
       p4_desc: "Programa per facilitar l'inici de projectes amb NodeJS i Express",
+      p4_desc_long: "NE-Launcher automatitza la creació d'un projecte base amb Node.js i Express: estructura de carpetes, dependències essencials i fitxers de configuració inicials. Estalvia temps en cada nou backend i manté un punt de partida coherent per a APIs REST i prototips ràpids.",
       p5_desc: "Programa per facilitar la creació i assignació de discos de forma massiva en màquines virtuals",
-      p6_desc: "Eina per detectar la instal·lació de programes en mode silenciós"
+      p5_desc_long: "MultiTool-Virtualbox centralitza tasques repetitives amb VirtualBox: creació de discs, assignació a màquines virtuals i operacions en lot. Està orientat a laboratoris i entorns de prova on cal desplegar diverses VMs amb la mateixa configuració de forma eficient.",
+      p6_desc: "Eina per detectar la instal·lació de programes en mode silenciós",
+      p6_desc_long: "PS-SilentInstallerDetector monitoritza i alerta quan es detecten instal·ladors silenciosos o comportaments sospitosos durant la instal·lació de software a Windows. Útil en suport tècnic i administració de sistemes per auditar què s'instal·la al equip sense interacció de l'usuari."
     },
     videos: {
       title: "Vídeos",
@@ -131,12 +137,18 @@ export const translations = {
       title: "Personal Projects",
       demo: "View Demo",
       p1_desc: "Cache cleaning tool developed with Powershell for Windows",
+      p1_desc_long: "PSCacheCleaner is a PowerShell script designed to optimize Windows quickly: it cleans temp folders, app cache, DNS, the Microsoft Store, and other system leftovers. It includes a progress bar, admin elevation, and options such as updating via Winget or Windows Update. It was born from the need to automate repetitive tasks I used to do manually in support environments.",
       p2_title: "Student Manager",
       p2_desc: "Project developed in Java for managing students in an SQL Database",
+      p2_desc_long: "A Java application with business logic connected to an SQL database. It allows creating, querying, updating, and deleting students in a structured way. The project applies OOP, parameterized queries, and the design of a small educational management system.",
       p3_desc: "Program developed to encourage coding without AI, fostering user creativity",
+      p3_desc_long: "CraftCoding is a proposal to practice programming without relying on AI assistants. It offers challenges and an environment that encourages thinking through solutions, experimenting, and learning from the process. The goal is to strengthen logical reasoning and developer creativity before reaching for automatic answers.",
       p4_desc: "Program to facilitate starting NodeJS and Express projects",
+      p4_desc_long: "NE-Launcher automates creating a base project with Node.js and Express: folder structure, essential dependencies, and initial config files. It saves time on every new backend and keeps a consistent starting point for REST APIs and quick prototypes.",
       p5_desc: "Program to facilitate the massive creation and allocation of disks in virtual machines",
-      p6_desc: "Tool to detect software installations in silent mode"
+      p5_desc_long: "MultiTool-Virtualbox centralizes repetitive VirtualBox tasks: disk creation, assignment to virtual machines, and batch operations. It is aimed at labs and test environments where multiple VMs need to be deployed with the same configuration efficiently.",
+      p6_desc: "Tool to detect software installations in silent mode",
+      p6_desc_long: "PS-SilentInstallerDetector monitors and alerts when silent installers or suspicious behavior are detected during software installation on Windows. Useful in technical support and system administration to audit what gets installed on a machine without user interaction."
     },
     videos: {
       title: "Videos",
