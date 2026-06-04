@@ -27,7 +27,7 @@ const getProyectos = (t: any) => [
         tecnologias: ["Python"],
         linkRepo: "https://github.com/ikkxeer/CraftCoding",
         linkDemo: "#",
-        imageLink: "https://aurora.edu/_files/img/ai/what-is-ai-800x500.jpg"
+        imageLink: "https://www.htx.gov.sg/images/default-source/news/2024/ai-article-1-banner-shot-min.jpg?sfvrsn=4b7c6915_3"
     },
     {
         id: 4,

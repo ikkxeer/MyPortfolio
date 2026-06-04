@@ -11,7 +11,7 @@ export const translations = {
     },
     hero: {
       developer: "Desenvolupador d'aplicacions multiplataforma",
-      bio: "Hola! Sóc l'Iker. M'encanta la tecnologia i tot el que està relacionat amb el desenvolupament de programari. M'agrada crear solucions innovadores i estic en aprenentatge constant per millorar les meves habilitats.",
+      bio: "Hola! Sóc Iker. M'encanta la tecnologia i tot el que està relacionat amb el desenvolupament de programari. M'agrada crear solucions innovadores i estic en aprenentatge constant per millorar les meves habilitats.",
       downloadCV: "Descarregar CV",
       contact: "Contactar"
     },

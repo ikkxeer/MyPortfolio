@@ -19,6 +19,9 @@ export default function Experiencia() {
                             <span className="empresa">{t("experiencia", "exp4_empresa")}</span>
                             <span className="experiencia-year">{t("experiencia", "exp4_fecha")}</span>
                             <h3 className="experiencia-title">{t("experiencia", "exp4_puesto")}</h3>
+                            <p className="experiencia-description">
+                                {t("experiencia", "exp4_desc")}
+                            </p>
                             <p className="skills-learned">Skills aprendidas</p>
                             <div className="skills">
                                 <p>Gestión bajo presión</p>
@@ -27,9 +30,7 @@ export default function Experiencia() {
                                 <p>Responsabilidad</p>
                                 <p>Organización</p>
                             </div>
-                            <p className="experiencia-description">
-                                {t("experiencia", "exp4_desc")}
-                            </p>
+
                         </div>
                     </div>
 

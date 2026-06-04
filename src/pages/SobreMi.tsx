@@ -29,19 +29,19 @@ export default function SobreMi() {
             </p>
 
             <Box className="social-container">
-              <a href="https://linkedin.com/in/tu-perfil" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.linkedin.com/in/iker-aramburu/" target="_blank" rel="noopener noreferrer">
                 <IconButton className="icon-btn" sx={{ '&:hover': { color: '#0A66C2' } }}>
                   <LinkedInIcon fontSize="large" />
                 </IconButton>
               </a>
 
-              <a href="https://github.com/tu-usuario" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/ikkxeer" target="_blank" rel="noopener noreferrer">
                 <IconButton className="icon-btn" sx={{ '&:hover': { color: '#ffffff' } }}>
                   <GitHubIcon fontSize="large" />
                 </IconButton>
               </a>
 
-              <a href="https://youtube.com/@tu-canal" target="_blank" rel="noopener noreferrer">
+              <a href="https://youtube.com/@mi-canal" target="_blank" rel="noopener noreferrer">
                 <IconButton className="icon-btn" sx={{ '&:hover': { color: '#FF0000' } }}>
                   <YouTubeIcon fontSize="large" />
                 </IconButton>
