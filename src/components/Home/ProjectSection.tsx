@@ -1,6 +1,9 @@
 import { useState } from "react";
+
 import { useLanguage } from "../../context/LanguageContext";
+
 import ProjectModal from "../All/ProjectModal";
+
 import "./ProjectSection.css";
 
 // Objeto de un proyecto
@@ -30,6 +33,7 @@ const getProyectos = (
     imageLink:
       "https://www.ionos.es/digitalguide/fileadmin/DigitalGuide/Teaser/cache-leeren-t.jpg",
   },
+
   {
     id: 2,
     titulo: t("projects", "p2_title"),
@@ -41,6 +45,7 @@ const getProyectos = (
     imageLink:
       "https://eresmama.com/wp-content/uploads/2019/09/alumnos-levantar-mano-clase.jpg",
   },
+
   {
     id: 3,
     titulo: "CraftCoding",
@@ -52,6 +57,7 @@ const getProyectos = (
     imageLink:
       "https://www.htx.gov.sg/images/default-source/news/2024/ai-article-1-banner-shot-min.jpg?sfvrsn=4b7c6915_3",
   },
+
   {
     id: 4,
     titulo: "NE-Launcher",
@@ -63,6 +69,7 @@ const getProyectos = (
     imageLink:
       "https://blog.prosite.dev/content/images/2024/12/NODEJS-API-REST-EXPRESS-1.jpg",
   },
+
   {
     id: 5,
     titulo: "MultiTool-Virtualbox",
@@ -74,6 +81,7 @@ const getProyectos = (
     imageLink:
       "https://www.softzone.es/app/uploads-softzone.es/2020/02/Virtualbox-Logo.jpg",
   },
+
   {
     id: 6,
     titulo: "PS-SilentInstallerDetector",
@@ -88,20 +96,20 @@ const getProyectos = (
 ];
 
 export default function ProjectSection() {
+  // Hook para obtener el idioma
   const { t } = useLanguage();
+
+  // Obtener los proyectos
   const misProyectos = getProyectos(t);
 
-  const [proyectoSeleccionado, setProyectoSeleccionado] = useState<Proyecto | null>(null);
-  
-  // Estado para saber si el usuario ya interactuó abriendo un proyecto
-  const [haAbiertoProyecto, setAbiertoProyecto] = useState<boolean>(false);
+  // Estado para el proyecto seleccionado
+  const [proyectoSeleccionado, setProyectoSeleccionado] =
+    useState<Proyecto | null>(null);
 
-  // Modificado para apagar la animación al abrir el modal
-  const abrirModal = (proyecto: Proyecto) => {
-    setProyectoSeleccionado(proyecto);
-    setAbiertoProyecto(true); 
-  };
+  // Función para abrir el modal
+  const abrirModal = (proyecto: Proyecto) => setProyectoSeleccionado(proyecto);
 
+  // Función para cerrar el modal
   const cerrarModal = () => setProyectoSeleccionado(null);
 
   return (
@@ -111,13 +119,13 @@ export default function ProjectSection() {
       <div className="projects-grid">
         {misProyectos.map((p) => (
           <div
-            // CAMBIO AQUÍ: Si no ha interactuado, le inyectamos la clase de animación
-            className={`project-card ${!haAbiertoProyecto ? "incite-animation" : ""}`}
+            className="project-card"
             key={p.id}
             onClick={() => abrirModal(p)}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
+
                 abrirModal(p);
               }
             }}
@@ -131,6 +139,7 @@ export default function ProjectSection() {
 
             <div className="project-info">
               <h3>{p.titulo}</h3>
+
               <p>{p.descripcion}</p>
 
               <div className="tech-tags">
