@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type CSSProperties } from 'react'
 import {
   X,
   Map,
@@ -10,12 +10,7 @@ import {
   BookOpen,
   ExternalLink,
   ArrowLeft,
-  Terminal,
-  Database,
   CodeXml,
-  Layers,
-  Boxes,
-  ShieldCheck,
   Lightbulb,
   Handshake,
   Sprout,
@@ -35,10 +30,13 @@ import {
   type Panel,
   type Zone,
 } from '../data/village'
+import { exhibitColors } from '../data/exhibits'
 import { portfolio } from '../data/portfolio'
 import ContactForm from './ContactForm'
 import VillageMap, { ZoneIcon } from './Map'
-const projectIcons = [Terminal, Database, CodeXml, Layers, Boxes, ShieldCheck]
+import ProjectIcon from './ProjectIcon'
+const exhibitStyle = (index: number) =>
+  ({ '--exhibit-color': exhibitColors[index] }) as CSSProperties
 const skillIcons = [Lightbulb, Handshake, Sprout]
 export default function Journal({
   page,
@@ -227,21 +225,24 @@ export default function Journal({
           {page === 'projects' &&
             (project === null ? (
               <div className="exhibits">
-                {data.projects.map((p, i) => {
-                  const Icon = projectIcons[i]
-                  return (
-                    <button key={p.name} onClick={() => setProject(i)}>
-                      <span className={'artifact shade' + i}>
-                        <Icon size={27} />
-                      </span>
-                      <span>
-                        <b>{p.name}</b>
-                        <small>{p.tags.join(' · ')}</small>
-                      </span>
-                      <ChevronRight size={16} />
-                    </button>
-                  )
-                })}
+                {!fallback && (
+                  <button onClick={() => visit('projects')}>
+                    <Map size={20} />
+                    {t.visit} · {t.projectsPlace}
+                  </button>
+                )}
+                {data.projects.map((p, i) => (
+                  <button key={p.name} onClick={() => setProject(i)}>
+                    <span className="artifact" style={exhibitStyle(i)}>
+                      <ProjectIcon index={i} size={27} />
+                    </span>
+                    <span>
+                      <b>{p.name}</b>
+                      <small>{p.tags.join(' · ')}</small>
+                    </span>
+                    <ChevronRight size={16} />
+                  </button>
+                ))}
               </div>
             ) : (
               <>
@@ -252,11 +253,8 @@ export default function Journal({
                   <ArrowLeft size={16} />
                   {t.projects}
                 </button>
-                <div className={'project-art shade' + project}>
-                  {(() => {
-                    const Icon = projectIcons[project]
-                    return <Icon size={60} strokeWidth={1.6} />
-                  })()}
+                <div className="project-art" style={exhibitStyle(project)}>
+                  <ProjectIcon index={project} size={60} />
                 </div>
                 <h3>{data.projects[project].name}</h3>
                 <div className="tags">

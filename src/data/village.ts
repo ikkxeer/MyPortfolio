@@ -27,7 +27,7 @@ export const destinations: Record<Zone, [number, number]> = {
   tech: [1, -3.4],
   journey: [9, -0.4],
   skills: [8, 6.4],
-  projects: [-5, 6.6],
+  projects: [-5.74, 6.62],
   contact: [2.1, 6.5],
 }
 const es = {

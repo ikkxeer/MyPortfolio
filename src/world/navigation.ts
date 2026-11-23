@@ -1,13 +1,9 @@
 import { anchors, type Zone } from '../data/village'
+import { exhibitSpots } from '../data/exhibits'
 export type Point = [number, number]
 // Narrow colliders leave the spaces between the six pedestals walkable.
 const ornaments: Point[] = [
-  [-7.5, 3.5],
-  [-5.7, 3.4],
-  [-4.2, 3.6],
-  [-7.5, 5.5],
-  [-5.7, 5.6],
-  [-4.2, 5.55],
+  ...exhibitSpots,
   [2, 5.5],
   [0, 2],
   anchors.npc,

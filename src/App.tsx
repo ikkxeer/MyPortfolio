@@ -121,6 +121,18 @@ function App() {
     languageBox = useRef<HTMLDivElement>(null)
   const t = copy[lang],
     light = mode === 'light'
+  const nearbyExhibit = near?.target === 'projects' ? near.exhibit : undefined
+  const hoveredExhibit =
+    hover?.target === 'projects' ? hover.exhibit : undefined
+  const exhibitIndex = nearbyExhibit ?? hoveredExhibit
+  const exhibit =
+    exhibitIndex === undefined
+      ? undefined
+      : {
+          ...portfolio(lang).projects[exhibitIndex],
+          index: exhibitIndex,
+          nearby: nearbyExhibit !== undefined,
+        }
   useEffect(() => {
     document.documentElement.lang = lang
     try {
@@ -197,13 +209,21 @@ function App() {
       setPanel(id)
       return
     }
-    if (ctl.current) ctl.current.travel(id)
-    else pending.current = id
-    setPanel(id === 'about' ? null : id)
+    if (ctl.current?.transitioning()) return
+    setPanel(null)
+    const arrival = () => {
+      if (id !== 'about' && id !== 'projects') open(id)
+    }
+    if (ctl.current) ctl.current.travel(id, arrival)
+    else {
+      pending.current = id
+      arrival()
+    }
   }
   useEffect(() => {
     const action = (e: KeyboardEvent) => {
       if (
+        ctl.current?.transitioning() ||
         e.repeat ||
         e.ctrlKey ||
         e.altKey ||
@@ -249,6 +269,8 @@ function App() {
           paused={!!panel || menu}
           workshop={t.workshopSign}
           guide={t.guideName}
+          exhibit={exhibit}
+          openLabel={t.open}
         />
       )}
       <header className="hud-top">
@@ -358,18 +380,18 @@ function App() {
               <Gamepad2 />
             </button>
           </div>
-          {hover && (
+          {hover && hover.target !== 'projects' && (
             <div className="hover-name">
               <MapPin size={16} />
               {placeName(hover.target, lang, hover.exhibit, inside)}
             </div>
           )}
-          {near ? (
+          {near && near.target !== 'projects' ? (
             <button className="prompt" onClick={() => ctl.current?.interact()}>
               <kbd>E</kbd>
               {placeName(near.target, lang, near.exhibit, inside)}
             </button>
-          ) : intro ? (
+          ) : !near && intro ? (
             <div className="intro-toast">
               <span className="intro-icon">
                 <Footprints />

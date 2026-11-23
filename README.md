@@ -21,7 +21,7 @@ npm run preview
 
 ## Jugar
 
-Camina con WASD, las flechas, los botones táctiles o un toque en el terreno. La tecla E abre el lugar cercano. También puedes pulsar directamente sobre un edificio o expositor. Usa M para viajar por el mapa y la rueda del ratón o los botones + y − para ajustar la cámara. La tecla E muestra el nombre del proyecto que abrirás. Pip da la bienvenida cerca del muelle. Entra en la casa de Iker por su puerta o desde el mapa y abre el álbum de la sala para ver su perfil. Escape cierra la ventana activa o te lleva al exterior de la casa.
+Camina con WASD, las flechas, los botones táctiles o un toque en el terreno. La tecla E abre el lugar cercano. También puedes pulsar directamente sobre un edificio o expositor. Usa M para viajar por el mapa y la rueda del ratón o los botones + y − para ajustar la cámara. En la plaza, el expositor seleccionado se ilumina y muestra el nombre y la tecnología del proyecto. Pulsa E o el botón del cartel para abrirlo. Pip da la bienvenida cerca del muelle. Entra en la casa de Iker por su puerta o desde el mapa y abre el álbum de la sala para ver su perfil. Escape cierra la ventana activa o te lleva al exterior de la casa. Al cruzar la puerta, una transición circular cierra y vuelve a abrir la vista.
 
 El reloj y la iluminación siguen la hora local del navegador. El sonido se activa desde el altavoz. El juego recuerda el idioma y respeta la preferencia de movimiento reducido. La guía de controles da acceso a la versión ligera con mapa, que también se abre cuando WebGL no está disponible.
 

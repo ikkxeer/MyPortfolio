@@ -15,9 +15,16 @@ export interface VillageEvents {
 export interface VillageController {
   pause: (value: boolean) => void
   zoom: (delta: number) => void
-  travel: (place: Zone) => void
+  travel: (place: Zone, arrived?: () => void) => void
+  transitioning: () => boolean
   touch: (x: number, y: number) => void
   leave: () => void
   interact: () => void
   dispose: () => void
+}
+
+export interface VillageView {
+  signs: (HTMLElement | null)[]
+  exhibit: HTMLElement | null
+  iris: HTMLElement | null
 }

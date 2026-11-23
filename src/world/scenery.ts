@@ -9,16 +9,10 @@ import {
   wood,
   type XZ,
 } from './modelKit'
-import { building, exhibit, lighthouse, pickable } from './village'
+import { building, lighthouse, pickable } from './village'
+import { decoratePlaza, exhibit } from './exhibits'
+import { exhibitSpots } from '../data/exhibits'
 
-export const exhibitSpots: XZ[] = [
-  [-7.5, 3.5],
-  [-5.7, 3.4],
-  [-4.2, 3.6],
-  [-7.5, 5.5],
-  [-5.7, 5.6],
-  [-4.2, 5.55],
-]
 const river = (z: number) =>
   -2.5 + Math.sin(z * 0.64) * 0.14 + Math.sin(z * 0.28) * 0.12
 const riverWidth = (z: number) =>
@@ -627,6 +621,7 @@ export function createScenery(low: boolean) {
     0.045,
     '#d9c49a',
   )
+  decoratePlaza(staticParts)
   bridge(staticParts, 1)
   bridge(staticParts, 6.5)
   pier(staticParts)
@@ -804,8 +799,9 @@ export function createScenery(low: boolean) {
   add(pickable(building(kit, 'tech'), 'tech', 1, -6))
   add(pickable(building(kit, 'journey'), 'journey', 9, -3))
   add(pickable(building(kit, 'skills'), 'skills', 8, 4))
-  exhibitSpots.forEach(([x, z], i) =>
-    add(pickable(exhibit(kit, i), 'projects', x, z, i)),
+  exhibitSpots.forEach(
+    ([x, z], i) =>
+      (add(pickable(exhibit(kit, i), 'projects', x, z, i)).position.y = 0.08),
   )
   add(pickable(mailbox(kit), 'contact', 2, 5.5))
   add(pickable(sign(kit), 'map', 0, 2))

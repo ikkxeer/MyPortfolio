@@ -861,8 +861,8 @@ kbd {
 }
 .artifact,
 .project-art {
-  color: #3e6249;
-  background: #dbe9cd;
+  color: var(--exhibit-color);
+  background: color-mix(in srgb, var(--exhibit-color) 16%, #fff8e4);
 }
 .artifact {
   width: 40px;
@@ -882,20 +882,6 @@ kbd {
     #ffffff20 12px,
     #ffffff20 15px
   );
-}
-.shade1,
-.shade4 {
-  background-color: #dbe4ee;
-  color: #4f6886;
-}
-.shade2,
-.shade5 {
-  background-color: #efdcc2;
-  color: #966d46;
-}
-.shade3 {
-  background-color: #e4daeb;
-  color: #806587;
 }
 .tags {
   display: flex;
@@ -1322,4 +1308,112 @@ kbd {
   font-size: 12px;
   line-height: 1.2;
   font-weight: 900;
+}
+
+.exhibit-anchor {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(310px, 86vw);
+  pointer-events: none;
+}
+
+.exhibit-preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 9px;
+  border: 2px solid #655140;
+  border-top: 5px solid var(--exhibit-color);
+  border-radius: 14px;
+  color: #293d37;
+  background: #fff9e7;
+  box-shadow:
+    0 3px 0 #46392de0,
+    0 6px 16px #2d3f3555;
+}
+
+.exhibit-preview::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  left: calc(50% - 5px);
+  bottom: -7px;
+  background: #fff9e7;
+  border: solid #655140;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.exhibit-emblem {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 39px;
+  height: 39px;
+  border-radius: 10px;
+  background: var(--exhibit-color);
+  color: #fff9e7;
+}
+
+.exhibit-caption {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  line-height: 1.16;
+}
+
+.exhibit-caption strong {
+  font-size: 14px;
+  font-weight: 950;
+  overflow-wrap: anywhere;
+}
+
+.exhibit-caption small {
+  font-weight: 800;
+  font-size: 12px;
+  color: #4f685f;
+}
+
+.exhibit-open {
+  pointer-events: auto;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  min-width: 42px;
+  padding: 3px 5px;
+  border: 1px solid #b47a42;
+  border-radius: 8px;
+  background: #ffe29a;
+  color: #4e3928;
+  font-size: 10px;
+  font-weight: 950;
+}
+
+.exhibit-open kbd {
+  background: #fff8dc;
+  color: #4e3928;
+  border-color: #ac8b5d;
+  box-shadow: 0 2px 0 #ac8b5d;
+}
+
+.house-iris {
+  position: absolute;
+  z-index: 12;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--iris-x) var(--iris-y),
+    transparent max(0px, calc(var(--iris-radius) - 2px)),
+    #162620c9 var(--iris-radius),
+    #162620 calc(var(--iris-radius) + 3px)
+  );
+}
+
+.house-iris.sealed {
+  background: #162620;
 }

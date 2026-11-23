@@ -1,19 +1,26 @@
 import * as T from 'three'
 import { makeSky } from '../environment/sky'
+import { makeIris } from './iris'
 import { anchors, destinations } from '../data/village'
 import { createVisitor, createGuide } from './character'
 import { makeInterior } from './interior'
 import { createScenery } from './scenery'
 import { walkable, route, type Point } from './navigation'
-import type { Target, VillageEvents, VillageController } from './contracts'
+import type {
+  Target,
+  VillageEvents,
+  VillageController,
+  VillageView,
+} from './contracts'
 
 export function startVillage(
   canvas: HTMLCanvasElement,
   events: VillageEvents,
-  signs: (HTMLElement | null)[],
+  view: VillageView,
 ): VillageController {
   const low = window.innerWidth < 760 || navigator.hardwareConcurrency <= 4
   const motion = matchMedia('(prefers-reduced-motion: reduce)')
+  const iris = makeIris(view.iris, motion)
   const renderer = new T.WebGLRenderer({
     canvas,
     antialias: !low,
@@ -36,9 +43,11 @@ export function startVillage(
   guide.group.userData.zone = 'npc'
   scene.add(scenery.group, visitor.group, guide.group)
   visitor.group.position.set(2.5, -0.06, 11.6)
+  visitor.group.scale.setScalar(1.33)
   const outdoorPickables = [...scenery.interactives, guide.group]
   const room = makeInterior()
   let inside = false
+  let snapCamera = false
   const doorstep = new T.Vector3()
   const getPickables = () => (inside ? room.interactives : outdoorPickables)
   const canWalk = (x: number, z: number) =>
@@ -53,7 +62,9 @@ export function startVillage(
     if (inside === value) return
     if (value) doorstep.copy(visitor.group.position)
     inside = value
-    ;(value ? room.scene : scene).add(visitor.group)
+    snapCamera = true
+    const destination = value ? room.scene : scene
+    destination.add(visitor.group)
     if (value) visitor.group.position.set(0, 0, 1.16)
     else visitor.group.position.copy(doorstep)
     visitor.group.rotation.y = value ? Math.PI : 0
@@ -82,17 +93,23 @@ export function startVillage(
   )
   ring.rotation.x = -Math.PI / 2
   ring.visible = false
-  const marker = new T.Mesh(
-    new T.OctahedronGeometry(0.2),
-    new T.MeshBasicMaterial({ color: '#ffe18a' }),
+  const exhibitHalo = new T.Mesh(
+    new T.TorusGeometry(0.84, 0.038, 8, 42),
+    new T.MeshBasicMaterial({
+      color: '#ffe799',
+      transparent: true,
+      opacity: 0.98,
+    }),
   )
+  exhibitHalo.rotation.x = -Math.PI / 2
+  exhibitHalo.visible = false
   const guideMarker = new T.Mesh(
     new T.OctahedronGeometry(0.14),
     new T.MeshBasicMaterial({ color: '#fff2bc' }),
   )
   guideMarker.position.y = 1.34
   guide.group.add(guideMarker)
-  scene.add(ring, marker)
+  scene.add(ring, exhibitHalo)
   const focus = new T.Vector3(0, 0, 0),
     desired = new T.Vector3(),
     cameraOffset = new T.Vector3(8, 19, 27)
@@ -146,7 +163,8 @@ export function startVillage(
   canvas.addEventListener(
     'pointermove',
     (e) => {
-      if (!paused && e.pointerType !== 'touch') setHover(resolve(e))
+      if (!paused && !iris.active() && e.pointerType !== 'touch')
+        setHover(resolve(e))
     },
     { signal: signal.signal },
   )
@@ -164,7 +182,12 @@ export function startVillage(
   canvas.addEventListener(
     'pointerup',
     (e) => {
-      if (paused || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 12)
+      if (
+        paused ||
+        iris.active() ||
+        e.button !== 0 ||
+        Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 12
+      )
         return
       const o = resolve(e)
       if (o) {
@@ -193,7 +216,7 @@ export function startVillage(
   canvas.addEventListener(
     'wheel',
     (e) => {
-      if (!paused) {
+      if (!paused && !iris.active()) {
         e.preventDefault()
         changeZoom(-Math.sign(e.deltaY) * 0.09)
       }
@@ -210,24 +233,41 @@ export function startVillage(
     'ArrowLeft',
     'ArrowRight',
   ]
+  function crossDoor(
+    enter: boolean,
+    afterSwap?: () => void,
+    arrived?: () => void,
+  ) {
+    if (iris.active() || enter === inside) return
+    arrivalTime = 3.5
+    goal = []
+    keys.clear()
+    stick.set(0, 0)
+    setHover(null)
+    iris.start(() => {
+      if (enter) {
+        const [x, z] = destinations.about
+        visitor.group.position.set(x, 0, z)
+      }
+      setInside(enter)
+      afterSwap?.()
+    }, arrived)
+  }
   function activate(target: Target, exhibit?: number) {
     arrivalTime = 3.5
-    if (target === 'exit') setInside(false)
-    else if (target === 'about' && !inside) {
-      visitor.group.position.set(-7, 0, -0.5)
-      setInside(true)
-    } else events.open(target, exhibit)
+    if (target === 'exit') crossDoor(false)
+    else if (target === 'about' && !inside) crossDoor(true)
+    else events.open(target, exhibit)
   }
   function interact() {
-    if (paused) return
-    updateReach()
-    if (reach) activate(reach, project)
+    if (!paused && !iris.active() && reach) activate(reach, project)
   }
   window.addEventListener(
     'keydown',
     (e) => {
       if (
         paused ||
+        iris.active() ||
         e.altKey ||
         e.ctrlKey ||
         e.metaKey ||
@@ -263,7 +303,8 @@ export function startVillage(
     },
     { signal: signal.signal },
   )
-  function updateReach() {
+  function updateReach(force = true) {
+    const previous = nearObject
     const p = visitor.group.position
     let best = Infinity
     reach = null
@@ -291,17 +332,20 @@ export function startVillage(
         project = o.userData.project
       }
     }
-    events.position(
-      inside ? doorstep.x : p.x,
-      inside ? doorstep.z : p.z,
-      reach,
-      project,
-    )
+    if (force || previous !== nearObject)
+      events.position(
+        inside ? doorstep.x : p.x,
+        inside ? doorstep.z : p.z,
+        reach,
+        project,
+      )
   }
   function tick(stamp: number) {
     if (dead || document.hidden) return
     frame = requestAnimationFrame(tick)
-    if (last && stamp - last < (paused ? 100 : low ? 31 : 15)) return
+    if (last && stamp - last < (paused && !iris.active() ? 100 : low ? 31 : 15))
+      return
+    iris.advance(stamp)
     const dt = Math.min(0.14, Math.max(0, (stamp - (last || stamp)) / 1000))
     last = stamp
     elapsed += dt
@@ -311,8 +355,8 @@ export function startVillage(
       lastLight = stamp
     }
     const p = visitor.group.position
-    let moving = false
-    if (!paused) {
+    let distance = 0
+    if (!paused && !iris.active()) {
       const dx =
         Number(keys.has('KeyD') || keys.has('ArrowRight')) -
         Number(keys.has('KeyA') || keys.has('ArrowLeft')) +
@@ -325,33 +369,34 @@ export function startVillage(
       if (step.lengthSq() > 0.001) {
         goal = []
         ring.visible = false
-      } else if (goal.length) {
-        const g = goal[0]
-        step.set(g[0] - p.x, g[1] - p.z)
-        if (step.length() < 0.1) {
+      } else {
+        while (
+          goal.length > 1 &&
+          Math.hypot(goal[0][0] - p.x, goal[0][1] - p.z) < 0.13
+        )
           goal.shift()
-          step.set(0, 0)
-          if (!goal.length) ring.visible = false
+        if (goal.length) {
+          step.set(goal[0][0] - p.x, goal[0][1] - p.z)
+          if (step.length() < 0.055) {
+            goal.shift()
+            step.set(0, 0)
+          }
         }
       }
       if (step.lengthSq() > 0.0001) {
-        step
-          .normalize()
-          .multiplyScalar(
-            goal.length
-              ? Math.min(
-                  dt * 3.7,
-                  Math.hypot(goal[0][0] - p.x, goal[0][1] - p.z),
-                )
-              : dt * 3.7,
-          )
+        const pace = inside ? 2.8 : 3.2
+        const travel = goal.length
+          ? Math.min(step.length(), dt * pace)
+          : dt * pace
+        step.setLength(travel)
         const ox = p.x,
           oz = p.z
         if (canWalk(p.x + step.x, p.z)) p.x += step.x
         if (canWalk(p.x, p.z + step.y)) p.z += step.y
-        moving = Math.abs(p.x - ox) + Math.abs(p.z - oz) > 0.0002
-        if (!moving) goal = []
-        if (moving) {
+        step.set(p.x - ox, p.z - oz)
+        distance = step.length()
+        if (distance < 0.0002) goal = []
+        if (distance > 0.0002) {
           const target = Math.atan2(step.x, step.y),
             rot = visitor.group.rotation.y
           visitor.group.rotation.y +=
@@ -372,11 +417,16 @@ export function startVillage(
           : p.x < -3.55 && p.x > -8.55 && p.z > 2.6 && p.z < 6.15
             ? 0.08
             : 0
-    visitor.animate(elapsed, moving, motion.matches)
+    visitor.animate(elapsed, distance > 0.0002, motion.matches, distance)
     guide.animate(elapsed, false, motion.matches)
     scenery.animate(elapsed, night, p.x, p.z, motion.matches)
     if (!motion.matches) atmosphere.animate(elapsed)
-    if (hovered && !paused) {
+    if (
+      hovered &&
+      !paused &&
+      !iris.active() &&
+      hovered.userData.zone !== 'projects'
+    ) {
       hovered.getWorldPosition(nearestPoint)
       ring.visible = true
       ring.position.set(nearestPoint.x, 0.1, nearestPoint.z)
@@ -389,17 +439,25 @@ export function startVillage(
       motion.matches || inside
         ? 1
         : T.MathUtils.smoothstep(arrivalTime, 0.15, 3.5)
+    const aspect = canvas.clientWidth / Math.max(1, canvas.clientHeight)
+    const closeToPlaza =
+      1 - T.MathUtils.smoothstep(Math.hypot(p.x + 5.7, p.z - 4.6), 2.6, 7.9)
+    const follow = aspect < 0.9 ? 0.81 : 0.53 + 0.16 * closeToPlaza
     desired.set(
-      inside ? 0 : p.x * 0.53 * intro,
+      inside ? 0 : p.x * follow * intro,
       inside ? 0.55 : 0,
       inside ? 0 : p.z * 0.65 * intro,
     )
-    focus.lerp(desired, motion.matches || inside ? 1 : 1 - Math.exp(-dt * 3))
-    const aspect = canvas.clientWidth / Math.max(1, canvas.clientHeight)
+    focus.lerp(
+      desired,
+      motion.matches || inside || snapCamera ? 1 : 1 - Math.exp(-dt * 3),
+    )
+    snapCamera = false
+    const streetSpan =
+      aspect < 0.9 ? 10.15 - closeToPlaza * 1.3 : 8.25 - closeToPlaza * 1.15
     const span = inside
       ? (aspect < 0.9 ? 6 : 4.2) / zoom
-      : (aspect < 0.9 ? 10.9 : 8.8) / zoom +
-        (1 - intro) * (aspect < 0.9 ? 14 : 8)
+      : streetSpan / zoom + (1 - intro) * (aspect < 0.9 ? 14 : 8)
     const orbit = (1 - intro) * 1.05
     cameraOffset.set(
       8 * Math.cos(orbit) - 27 * Math.sin(orbit),
@@ -414,13 +472,14 @@ export function startVillage(
     camera.lookAt(focus)
     camera.updateProjectionMatrix()
     camera.updateMatrixWorld()
-    signs.forEach((sign, index) => {
+    view.signs.forEach((sign, index) => {
       if (!sign) return
       const [x, z] = index === 0 ? anchors.tech : anchors.npc
       projected.set(x, index === 0 ? 3.46 : 2.1, z).project(camera)
       const visible =
         !inside &&
         !paused &&
+        !iris.active() &&
         intro > 0.78 &&
         Math.abs(projected.x) < 0.87 &&
         Math.abs(projected.y) < 0.79
@@ -428,21 +487,54 @@ export function startVillage(
       if (visible)
         sign.style.transform = `translate(${((projected.x + 1) * canvas.clientWidth) / 2}px,${((1 - projected.y) * canvas.clientHeight) / 2}px) translate(-50%,-100%)`
     })
-    if (elapsed - lastHud > 0.17) {
-      lastHud = elapsed
-      updateReach()
-    }
-    const exhibit = nearObject
-    marker.visible =
-      !inside &&
-      !paused &&
-      !!exhibit &&
-      (exhibit.userData.zone === 'projects' || exhibit.userData.zone === 'npc')
-    if (exhibit && marker.visible) {
-      marker.position.set(
-        exhibit.position.x,
-        1.95 + (motion.matches ? 0 : 0.12 * Math.sin(elapsed * 5)),
-        exhibit.position.z,
+    const reportPosition = elapsed - lastHud > 0.17
+    if (reportPosition) lastHud = elapsed
+    updateReach(reportPosition)
+    const activeExhibit =
+      reach === 'projects'
+        ? nearObject
+        : hovered?.userData.zone === 'projects'
+          ? hovered
+          : null
+    exhibitHalo.visible =
+      !!activeExhibit && !inside && !paused && !iris.active()
+    if (activeExhibit && exhibitHalo.visible) {
+      const { x, z } = activeExhibit.position
+      exhibitHalo.position.set(x, 0.135, z)
+      exhibitHalo.material.opacity = motion.matches
+        ? 0.98
+        : 0.89 + 0.09 * Math.cos(elapsed * 4)
+      projected.set(x, 1.89, z).project(camera)
+      if (view.exhibit) {
+        const width = canvas.clientWidth
+        const height = canvas.clientHeight
+        const safeMargin = Math.min(159, width * 0.43)
+        const labelX = T.MathUtils.clamp(
+          ((projected.x + 1) * width) / 2,
+          safeMargin,
+          width - safeMargin,
+        )
+        const labelY = T.MathUtils.clamp(
+          ((1 - projected.y) * height) / 2,
+          Math.min(130, height * 0.36),
+          height * 0.81,
+        )
+        view.exhibit.style.transform = `translate(${labelX}px,${labelY}px) translate(-50%,-100%)`
+        view.exhibit.hidden = false
+      }
+    } else if (view.exhibit) view.exhibit.hidden = true
+    if (iris.active()) {
+      projected
+        .copy(p)
+        .addScaledVector(T.Object3D.DEFAULT_UP, 0.92)
+        .project(camera)
+      const width = canvas.clientWidth,
+        height = canvas.clientHeight
+      iris.draw(
+        T.MathUtils.clamp(((projected.x + 1) * width) / 2, 0, width),
+        T.MathUtils.clamp(((1 - projected.y) * height) / 2, 0, height),
+        width,
+        height,
       )
     }
     renderer.render(inside ? room.scene : scene, camera)
@@ -470,28 +562,42 @@ export function startVillage(
       goal = []
       setHover(null)
     },
-    zoom: changeZoom,
-    leave() {
-      setInside(false)
+    zoom(delta) {
+      if (!iris.active()) changeZoom(delta)
     },
-    travel(id) {
+    transitioning: iris.active,
+    leave() {
+      crossDoor(false)
+    },
+    travel(id, arrived) {
+      if (iris.active()) return
       arrivalTime = 3.5
       if (id === 'about') {
-        if (!inside) activate(id)
+        if (!inside) crossDoor(true, undefined, arrived)
         return
       }
-      setInside(false)
-      const [x, z] = destinations[id]
-      visitor.group.position.set(x, 0, z)
-      goal = []
-      visitor.group.rotation.y = Math.atan2(
-        anchors[id][0] - x,
-        anchors[id][1] - z,
-      )
-      updateReach()
+      const move = () => {
+        const [x, z] = destinations[id]
+        visitor.group.position.set(x, 0, z)
+        goal = []
+        keys.clear()
+        stick.set(0, 0)
+        snapCamera = true
+        setHover(null)
+        visitor.group.rotation.y = Math.atan2(
+          anchors[id][0] - x,
+          anchors[id][1] - z,
+        )
+        updateReach()
+      }
+      if (inside) crossDoor(false, move, arrived)
+      else {
+        move()
+        arrived?.()
+      }
     },
     touch(x, y) {
-      stick.set(x, y)
+      if (!iris.active()) stick.set(x, y)
     },
     interact,
     dispose() {

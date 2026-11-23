@@ -4,7 +4,12 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 interface IslandCharacter {
   group: THREE.Group
   /** Seconds since startup. Facing follows the outer group's local +Z axis. */
-  animate: (time: number, moving: boolean, reduced: boolean) => void
+  animate: (
+    time: number,
+    moving: boolean,
+    reduced: boolean,
+    distance?: number,
+  ) => void
 }
 
 type Vec3 = [number, number, number]
@@ -221,15 +226,34 @@ export function createVisitor(): IslandCharacter {
   }
   const gaze = eyes.mesh(head, [0, 0.021, 0])
 
-  const legs: THREE.Mesh[] = []
+  const legs: {
+    side: number
+    thigh: THREE.Mesh
+    calf: THREE.Mesh
+    shoe: THREE.Mesh
+  }[] = []
   const arms: THREE.Mesh[] = []
+  const down = new THREE.Vector3(0, -1, 0)
+  const direction = new THREE.Vector3()
+  const hip = new THREE.Vector3(),
+    knee = new THREE.Vector3(),
+    ankle = new THREE.Vector3()
   for (const side of [-1, 1]) {
-    const leg = sculpt(material)
-    leg.oval('#445b6b', [0, -0.081, 0], [0.083, 0.125, 0.085])
-    leg.oval('#f3d7a5', [0, -0.197, 0], [0.064, 0.076, 0.061])
-    leg.oval(boots, [0, -0.268, 0.029], [0.088, 0.071, 0.124])
-    leg.oval('#73513d', [0, -0.306, 0.038], [0.087, 0.028, 0.124])
-    legs.push(leg.mesh(body, [side * 0.099, 0.337, 0]))
+    const thigh = sculpt(material)
+    thigh.oval('#3e556d', [0, -0.091, 0], [0.087, 0.125, 0.083])
+    const calf = sculpt(material)
+    calf.oval('#fff0cb', [0, -0.095, 0], [0.071, 0.112, 0.065])
+    calf.oval('#d39a5c', [0, -0.107, 0], [0.074, 0.026, 0.07])
+    const shoe = sculpt(material)
+    shoe.oval(boots, [0, -0.016, 0.059], [0.098, 0.077, 0.148])
+    shoe.oval('#573c34', [0, -0.067, 0.055], [0.101, 0.028, 0.147])
+    shoe.oval('#d79158', [0, 0.026, 0.093], [0.084, 0.055, 0.104])
+    legs.push({
+      side,
+      thigh: thigh.mesh(group),
+      calf: calf.mesh(group),
+      shoe: shoe.mesh(group),
+    })
 
     const arm = sculpt(material)
     arm.oval(
@@ -253,39 +277,85 @@ export function createVisitor(): IslandCharacter {
     arms.push(arm.mesh(body, [side * 0.19, 0.665, 0]))
   }
 
+  function poseSegment(
+    segment: THREE.Mesh,
+    from: THREE.Vector3,
+    to: THREE.Vector3,
+    length: number,
+  ) {
+    direction.subVectors(to, from)
+    segment.position.copy(from)
+    segment.scale.y = direction.length() / length
+    segment.quaternion.setFromUnitVectors(down, direction.normalize())
+  }
+  const shadow = new THREE.Mesh(
+    new THREE.CircleGeometry(0.33, 24),
+    new THREE.MeshBasicMaterial({
+      color: '#24382e',
+      transparent: true,
+      opacity: 0.2,
+      depthWrite: false,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+    }),
+  )
+  shadow.rotation.x = -Math.PI / 2
+  shadow.scale.y = 0.85
+  shadow.position.y = 0.015
+  group.add(shadow)
+  legs.forEach(({ shoe, calf }) => {
+    shoe.name = 'visitor boot'
+    calf.name = 'visitor calf'
+  })
   group.name = 'visitor'
   let gait = 0
   let previous = 0
   let effort = 0
-  return {
-    group,
-    animate(time, moving, reduced) {
-      const dt = Math.min(0.1, time - previous)
-      previous = time
-      effort += ((moving && !reduced ? 1 : 0) - effort) * Math.min(1, dt * 16)
-      gait += dt * 12 * effort
-      const stride = Math.sin(gait) * effort
-      body.rotation.x = reduced ? 0 : effort * 0.09
-      body.rotation.z = reduced ? 0 : stride * 0.044
-      body.position.y = reduced
-        ? 0
-        : moving
-          ? Math.abs(Math.cos(gait)) * 0.105 * effort
-          : Math.sin(time * 2.2) * 0.009
-      head.rotation.z = reduced
-        ? 0
-        : moving
-          ? stride * 0.032
-          : Math.sin(time * 1.43) * 0.022
-      gaze.scale.y = reduced
-        ? 1
-        : Math.min(1, Math.abs(((time + 1.2) % 4.7) - 2) * 13 + 0.08)
-      legs[0].rotation.x = stride * 0.82
-      legs[1].rotation.x = -stride * 0.82
-      arms[0].rotation.x = -stride * 0.68
-      arms[1].rotation.x = stride * 0.68
-    },
+  const animate: IslandCharacter['animate'] = (
+    time,
+    moving,
+    reduced,
+    distance,
+  ) => {
+    const dt = Math.min(0.1, Math.max(0, time - previous))
+    previous = time
+    const target = moving && !reduced ? 1 : 0
+    effort = reduced
+      ? 0
+      : THREE.MathUtils.damp(effort, target, moving ? 22 : 13, dt)
+    if (target) gait = (gait + (distance ?? dt * 3.1) / 1.44) % 1
+    const sway = Math.sin(gait * Math.PI * 2) * effort
+    const bounce = (0.5 - 0.5 * Math.cos(gait * Math.PI * 4)) * 0.074 * effort
+    body.position.set(sway * 0.038, bounce, 0)
+    body.rotation.set(0.12 * effort, -0.095 * sway, -0.08 * sway)
+    head.rotation.z = reduced
+      ? 0
+      : 0.065 * sway + Math.sin(time * 1.7) * 0.015 * (1 - effort)
+    gaze.scale.y = reduced
+      ? 1
+      : Math.min(1, Math.abs(((time + 1.2) % 4.7) - 2) * 13 + 0.08)
+
+    legs.forEach(({ side, thigh, calf, shoe }, index) => {
+      const phase = (gait + index * 0.5) % 1
+      const onGround = phase < 0.56
+      const swing = THREE.MathUtils.clamp((phase - 0.56) / 0.44, 0, 1)
+      const reach = onGround
+        ? 0.31 - (0.62 * phase) / 0.56
+        : -0.31 + 0.62 * THREE.MathUtils.smoothstep(swing, 0, 1)
+      const lift = Math.sin(Math.PI * swing) * effort
+      hip.set(side * 0.111 + body.position.x, 0.348 + bounce, 0)
+      ankle.set(side * 0.117, 0.091 + 0.205 * lift, reach * effort)
+      knee.lerpVectors(hip, ankle, 0.53)
+      knee.z += 0.04 + 0.158 * lift
+      poseSegment(thigh, hip, knee, 0.183)
+      poseSegment(calf, knee, ankle, 0.178)
+      shoe.position.copy(ankle)
+      shoe.rotation.set(0.42 * lift * Math.cos(swing * Math.PI), side * 0.12, 0)
+      arms[index].rotation.x = reach * effort * 2.35
+    })
   }
+  animate(0, false, false)
+  return { group, animate }
 }
 
 export function createGuide(): IslandCharacter {
