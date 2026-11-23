@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import {
   Compass,
+  LogOut,
   Map as MapIcon,
   MapPin,
   Sun,
@@ -12,10 +13,7 @@ import {
   VolumeX,
   Globe2,
   ChevronDown,
-  Play,
   Gamepad2,
-  Leaf,
-  Sparkle,
   Plus,
   Minus,
   Check,
@@ -28,12 +26,16 @@ import {
   languages,
   type Lang,
   type Zone,
-  type Place,
   type Panel,
 } from './data/village'
+import { portfolio } from './data/portfolio'
 import { daylight } from './environment/daylight'
 import { useAmbience } from './hooks/useAmbience'
-import type { VillageController, VillageEvents } from './world/contracts'
+import type {
+  Target,
+  VillageController,
+  VillageEvents,
+} from './world/contracts'
 import Game from './ui/Game'
 import Journal from './ui/Panel'
 import VillageMap, { ZoneIcon } from './ui/Map'
@@ -46,8 +48,18 @@ function readLang(): Lang {
     return 'es'
   }
 }
-function placeName(place: Place | null, lang: Lang) {
+function placeName(
+  place: Target | null,
+  lang: Lang,
+  exhibit?: number,
+  inside = false,
+) {
   const t = copy[lang]
+  if (place === 'projects' && exhibit !== undefined)
+    return portfolio(lang).projects[exhibit].name
+  if (place === 'exit') return t.leaveHouse
+  if (place === 'about' && inside) return t.album
+  if (place === 'tech') return t.workshopSign
   return place === 'map'
     ? t.map
     : place === 'npc'
@@ -91,21 +103,23 @@ function App() {
   const [lang, setLang] = useState<Lang>(readLang),
     [menu, setMenu] = useState(false),
     [sound, toggleSound] = useAmbience()
-  const [mode, setMode] = useState<'title' | 'game' | 'light'>(
-      deep ? 'game' : 'title',
-    ),
+  const [mode, setMode] = useState<'game' | 'light'>('game'),
     [panel, setPanel] = useState<Panel | null>(deep),
     [project, setProject] = useState<number | null>(null)
   const [pos, setPos] = useState<[number, number]>([2.5, 11.6]),
-    [near, setNear] = useState<Place | null>(null),
-    [hover, setHover] = useState<Place | null>(null)
+    [near, setNear] = useState<{ target: Target; exhibit?: number } | null>(
+      null,
+    ),
+    [hover, setHover] = useState<{ target: Target; exhibit?: number } | null>(
+      null,
+    ),
+    [inside, setInside] = useState(false)
   const [ready, setReady] = useState(false),
-    [intro, setIntro] = useState(false)
+    [intro, setIntro] = useState(!deep)
   const ctl = useRef<VillageController | null>(null),
     pending = useRef<Zone | null>(null),
     languageBox = useRef<HTMLDivElement>(null)
   const t = copy[lang],
-    title = mode === 'title',
     light = mode === 'light'
   useEffect(() => {
     document.documentElement.lang = lang
@@ -140,25 +154,28 @@ function App() {
     setPanel(null)
     setProject(null)
   }, [])
-  const enter = useCallback(() => {
-    setMode('game')
-    setReady(false)
-    setIntro(true)
-    setMenu(false)
-    setPanel(null)
-  }, [])
   const events = useMemo<VillageEvents>(
     () => ({
       open,
-      position(x, z, place) {
+      position(x, z, target, exhibit) {
         setPos((old) =>
           Math.abs(old[0] - x) + Math.abs(old[1] - z) > 0.08 ? [x, z] : old,
         )
-        setNear(place)
+        setNear((old) =>
+          old?.target === target && old?.exhibit === exhibit
+            ? old
+            : target
+              ? { target, exhibit }
+              : null,
+        )
       },
-      hover: setHover,
+      hover(target, exhibit) {
+        setHover(target ? { target, exhibit } : null)
+      },
+      inside: setInside,
       fail() {
         setMode('light')
+        setInside(false)
         setReady(false)
         setIntro(false)
         setPanel((p) => p ?? 'map')
@@ -180,23 +197,9 @@ function App() {
       setPanel(id)
       return
     }
-    if (title) {
-      pending.current = id
-      setMode('game')
-      setReady(false)
-    } else if (ctl.current) ctl.current.travel(id)
+    if (ctl.current) ctl.current.travel(id)
     else pending.current = id
-    setPanel(id)
-  }
-  function home() {
-    setMode('title')
-    setIntro(false)
-    setPanel(null)
-    setReady(false)
-    setNear(null)
-    setHover(null)
-    pending.current = null
-    setPos([2.5, 11.6])
+    setPanel(id === 'about' ? null : id)
   }
   useEffect(() => {
     const action = (e: KeyboardEvent) => {
@@ -214,14 +217,7 @@ function App() {
         e.preventDefault()
         open('map')
       }
-      if (
-        title &&
-        e.code === 'Enter' &&
-        (!(e.target instanceof HTMLElement) || !e.target.closest('button,a'))
-      ) {
-        e.preventDefault()
-        enter()
-      }
+      if (inside && e.code === 'Escape') ctl.current?.leave()
       if (
         intro &&
         [
@@ -240,16 +236,10 @@ function App() {
     }
     window.addEventListener('keydown', action)
     return () => window.removeEventListener('keydown', action)
-  }, [title, menu, panel, intro, open, enter])
-  const hasCover = title || light || !ready
+  }, [menu, panel, intro, open, inside])
+  const hasCover = light || !ready
   return (
-    <main
-      className={
-        'screen ' +
-        (title ? 'title-screen' : 'playing') +
-        (light ? ' light-mode' : '')
-      }
-    >
+    <main className={'screen ' + 'playing' + (light ? ' light-mode' : '')}>
       {hasCover && <div className="cover" aria-hidden="true" />}
       {mode === 'game' && (
         <Game
@@ -257,13 +247,15 @@ function App() {
           events={events}
           ready={loaded}
           paused={!!panel || menu}
+          workshop={t.workshopSign}
+          guide={t.guideName}
         />
       )}
       <header className="hud-top">
         <button
           className="brand"
-          onClick={title ? () => open('map') : home}
-          aria-label={title ? t.map : t.returnTitle}
+          onClick={() => open('map')}
+          aria-label={t.map}
         >
           <span className="brand-icon">
             <Compass size={29} strokeWidth={2.1} />
@@ -315,134 +307,110 @@ function App() {
           </div>
         </div>
       </header>
-      {title && (
-        <section className="title-menu">
-          <div className="welcome">
-            <Leaf size={15} fill="currentColor" />
-            {t.welcome}
-          </div>
-          <h1 aria-label="Iker’s World">
-            <span className="title-one">Iker’s</span>
-            <span className="title-two">World</span>
-            <Sparkle className="star star-big" aria-hidden="true" />
-            <Sparkle className="star star-small" aria-hidden="true" />
-          </h1>
-          <p className="lead">{t.lead}</p>
-          <div className="title-actions">
-            <button className="primary start" onClick={enter}>
-              <Play size={18} fill="currentColor" />
-              {t.enter}
-            </button>
-            <button className="secondary" onClick={() => open('controls')}>
-              <Gamepad2 size={21} />
-              {t.controls}
-            </button>
-          </div>
+      {!ready && !light && !panel && (
+        <div className="loading">{t.loading3D}</div>
+      )}
+      {light && !panel && (
+        <section className="light-home">
+          <h1>{t.light}</h1>
+          <p>{t.mapFallback}</p>
+          <button className="primary small" onClick={() => open('map')}>
+            <MapIcon />
+            {t.map}
+          </button>
         </section>
       )}
-      {!title && (
+      {ready && !panel && (
         <>
-          {!ready && !light && !panel && (
-            <div className="loading">{t.loading3D}</div>
-          )}
-          {light && !panel && (
-            <section className="light-home">
-              <h1>{t.light}</h1>
-              <p>{t.mapFallback}</p>
-              <button className="primary small" onClick={() => open('map')}>
-                <MapIcon />
-                {t.map}
+          <div className="game-tools">
+            {inside && (
+              <button
+                className="round"
+                onClick={() => ctl.current?.leave()}
+                aria-label={t.leaveHouse}
+                title={t.leaveHouse}
+              >
+                <LogOut size={18} />
               </button>
-            </section>
+            )}
+            <button
+              className="round"
+              onClick={() => ctl.current?.zoom(0.12)}
+              title={t.zoomIn}
+              aria-label={t.zoomIn}
+            >
+              <Plus />
+            </button>
+            <button
+              className="round"
+              onClick={() => ctl.current?.zoom(-0.12)}
+              title={t.zoomOut}
+              aria-label={t.zoomOut}
+            >
+              <Minus />
+            </button>
+            <button
+              className="round"
+              onClick={() => open('controls')}
+              title={t.guide}
+              aria-label={t.guide}
+            >
+              <Gamepad2 />
+            </button>
+          </div>
+          {hover && (
+            <div className="hover-name">
+              <MapPin size={16} />
+              {placeName(hover.target, lang, hover.exhibit, inside)}
+            </div>
           )}
-          {ready && !panel && (
-            <>
-              <div className="game-tools">
-                <button
-                  className="round"
-                  onClick={() => ctl.current?.zoom(0.12)}
-                  title={t.zoomIn}
-                  aria-label={t.zoomIn}
-                >
-                  <Plus />
-                </button>
-                <button
-                  className="round"
-                  onClick={() => ctl.current?.zoom(-0.12)}
-                  title={t.zoomOut}
-                  aria-label={t.zoomOut}
-                >
-                  <Minus />
-                </button>
-                <button
-                  className="round"
-                  onClick={() => open('controls')}
-                  title={t.guide}
-                  aria-label={t.guide}
-                >
-                  <Gamepad2 />
-                </button>
+          {near ? (
+            <button className="prompt" onClick={() => ctl.current?.interact()}>
+              <kbd>E</kbd>
+              {placeName(near.target, lang, near.exhibit, inside)}
+            </button>
+          ) : intro ? (
+            <div className="intro-toast">
+              <span className="intro-icon">
+                <Footprints />
+              </span>
+              <div>
+                <b>{t.intro}</b>
+                <p>{t.walkClick}</p>
+                <small>
+                  <kbd>WASD</kbd> {t.move} · <kbd>E</kbd> {t.interact}
+                </small>
               </div>
-              {hover && !intro && (
-                <div className="hover-name">
-                  <MapPin size={16} />
-                  {placeName(hover, lang)}
-                </div>
-              )}
-              {intro ? (
-                <div className="intro-toast">
-                  <span className="intro-icon">
-                    <Footprints />
-                  </span>
-                  <div>
-                    <b>{t.intro}</b>
-                    <p>{t.walkClick}</p>
-                    <small>
-                      <kbd>WASD</kbd> {t.move} · <kbd>E</kbd> {t.interact}
-                    </small>
-                  </div>
-                  <button
-                    onClick={() => setIntro(false)}
-                    aria-label={t.skip}
-                    title={t.skip}
-                  >
-                    <X size={18} />
-                  </button>
-                </div>
-              ) : (
-                near && (
-                  <button
-                    className="prompt"
-                    onClick={() => ctl.current?.interact()}
-                  >
-                    <kbd>E</kbd>
-                    {t.interact} · {placeName(near, lang)}
-                  </button>
-                )
-              )}
-              <div className="touch-pad" role="group" aria-label={t.touch}>
-                {[
-                  [0, -1, '↑'],
-                  [-1, 0, '←'],
-                  [1, 0, '→'],
-                  [0, 1, '↓'],
-                ].map(([x, y, label], i) => (
-                  <button
-                    key={i}
-                    aria-label={t.move + ' ' + label}
-                    onPointerDown={(e) => {
-                      e.currentTarget.setPointerCapture(e.pointerId)
-                      setIntro(false)
-                      ctl.current?.touch(Number(x), Number(y))
-                    }}
-                    onLostPointerCapture={() => ctl.current?.touch(0, 0)}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
+              <button
+                onClick={() => setIntro(false)}
+                aria-label={t.skip}
+                title={t.skip}
+              >
+                <X size={18} />
+              </button>
+            </div>
+          ) : null}
+          <div className="touch-pad" role="group" aria-label={t.touch}>
+            {[
+              [0, -1, '↑'],
+              [-1, 0, '←'],
+              [1, 0, '→'],
+              [0, 1, '↓'],
+            ].map(([x, y, label], i) => (
+              <button
+                key={i}
+                aria-label={t.move + ' ' + label}
+                onPointerDown={(e) => {
+                  e.currentTarget.setPointerCapture(e.pointerId)
+                  setIntro(false)
+                  ctl.current?.touch(Number(x), Number(y))
+                }}
+                onLostPointerCapture={() => ctl.current?.touch(0, 0)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </>
       )}
       <footer className="hud-bottom">
@@ -451,29 +419,26 @@ function App() {
             <MapPin size={20} />
           </span>
           <div>
-            <small>{title ? t.arrival : t.coast}</small>
-            <b>{title ? t.dock : near ? placeName(near, lang) : t.path}</b>
+            <small>{inside ? t.about : t.coast}</small>
+            <b>
+              {inside
+                ? t.interior
+                : near
+                  ? placeName(near.target, lang, near.exhibit)
+                  : t.path}
+            </b>
           </div>
         </div>
-        {!title && (
-          <nav className="quick" aria-label={t.access}>
-            {(['about', 'projects', 'tech', 'contact'] as Zone[]).map((id) => (
-              <button
-                key={id}
-                onClick={() => open(id)}
-                title={t[placeKeys[id]]}
-              >
-                <ZoneIcon id={id} size={19} />
-                <span>{id === 'about' ? t.who : t[id]}</span>
-              </button>
-            ))}
-          </nav>
-        )}
-        <button
-          className={'map-button ' + (!title ? 'in-game' : '')}
-          onClick={() => open('map')}
-        >
-          {!title && <VillageMap lang={lang} mini position={pos} />}
+        <nav className="quick" aria-label={t.access}>
+          {(['about', 'projects', 'tech', 'contact'] as Zone[]).map((id) => (
+            <button key={id} onClick={() => open(id)} title={t[placeKeys[id]]}>
+              <ZoneIcon id={id} size={19} />
+              <span>{id === 'about' ? t.who : t[id]}</span>
+            </button>
+          ))}
+        </nav>
+        <button className="map-button in-game" onClick={() => open('map')}>
+          <VillageMap lang={lang} mini position={pos} />
           <span>
             <MapIcon size={20} />
             {t.map}
@@ -494,6 +459,7 @@ function App() {
           fallback={light}
           useMap={() => {
             setMode('light')
+            setInside(false)
             setIntro(false)
             setPanel('map')
           }}

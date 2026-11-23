@@ -211,22 +211,85 @@ export function building(
       )
     }
   } else if (isLab) {
-    door(b, 0.4, face, '#6f9186')
-    windowBox(b, -0.78, 1.25, face, 0.78, 0.83, false)
-    // A miniature observatory with a brass telescope makes the laboratory legible from above.
-    b.cylinder([1.33, 1.05, -0.62], 0.93, 0.97, 2.1, '#c7d3aa', 12)
-    b.cylinder([1.33, 2.12, -0.62], 0.99, 0.99, 0.16, timber, 12)
-    b.ball([1.33, 2.19, -0.62], [1.03, 0.82, 1.03], '#588f89', 2)
-    b.stick([1.19, 2.51, -0.63], [1.9, 3.1, -0.41], 0.17, '#a77e49')
-    b.stick([1.78, 3, -0.45], [2.02, 3.2, -0.38], 0.22, '#e5bc6b')
-    b.block([-0.95, 0.39, face + 0.47], [1.05, 0.65, 0.38], wood)
-    for (let i = 0; i < 6; i++)
+    // Open-front wood and metal workbench, framed by a roll-up shop door.
+    b.block(
+      [-0.48, 1.02, face + 0.045],
+      [2.06, 1.76, 0.14],
+      '#3c5547',
+      [0, 0, 0],
+      true,
+    )
+    for (const x of [-1.49, 0.51])
+      b.block([x, 0.98, face + 0.15], [0.13, 1.83, 0.23], timber)
+    for (let j = 0; j < 5; j++)
       b.block(
-        [-1.3 + i * 0.145, 0.53, face + 0.68],
-        [0.11, 0.38 + 0.05 * (i % 3), 0.16],
-        ['#c67859', '#678f8c', '#d6a057'][i % 3],
-        [0, 0, ((i % 3) - 1) * 0.07],
+        [-0.49, 1.58 + j * 0.072, face + 0.17],
+        [1.92, 0.062, 0.23],
+        j % 2 ? '#76958a' : '#9ab2a0',
       )
+    b.block(
+      [-0.5, 0.76, face + 0.33],
+      [1.86, 0.11, 0.63],
+      '#c08b60',
+      [0, 0, 0],
+      true,
+    )
+    for (const x of [-1.26, 0.27])
+      b.block([x, 0.36, face + 0.44], [0.13, 0.72, 0.14], timber)
+    b.block(
+      [-0.91, 1.04, face + 0.26],
+      [0.72, 0.44, 0.12],
+      '#253c39',
+      [0, 0, 0],
+      true,
+    )
+    b.block([-0.91, 1.04, face + 0.332], [0.61, 0.33, 0.027], '#6caa91')
+    for (const [x, y, width] of [
+      [-0.98, 1.12, 0.28],
+      [-0.94, 1.05, 0.32],
+      [-1.05, 0.98, 0.14],
+    ])
+      b.block([x, y, face + 0.35], [width, 0.019, 0.012], '#f4df98')
+    b.block([-0.88, 0.832, face + 0.53], [0.56, 0.045, 0.21], '#aac2a8')
+    b.block(
+      [0.18, 0.91, face + 0.47],
+      [0.34, 0.25, 0.26],
+      '#dd875e',
+      [0, 0.08, 0],
+      true,
+    )
+    b.stick(
+      [0.18, 1.04, face + 0.47],
+      [0.18, 1.22, face + 0.47],
+      0.043,
+      '#ebc86d',
+    )
+    door(b, 1.02, face, '#7ba091')
+    // A coding symbol on the fascia identifies the workshop from across the path.
+    const signZ = face + 0.19
+    b.block([0, 2.36, signZ], [1.91, 0.58, 0.13], '#2e5c50', [0, 0, 0], true)
+    for (const direction of [-1, 1]) {
+      const tip = direction * 0.56
+      const inner = direction * 0.34
+      b.stick(
+        [inner, 2.53, signZ + 0.1],
+        [tip, 2.36, signZ + 0.1],
+        0.042,
+        '#fbe2a4',
+      )
+      b.stick(
+        [tip, 2.36, signZ + 0.1],
+        [inner, 2.19, signZ + 0.1],
+        0.042,
+        '#fbe2a4',
+      )
+    }
+    b.stick(
+      [-0.1, 2.19, signZ + 0.105],
+      [0.1, 2.53, signZ + 0.105],
+      0.035,
+      '#91cbb0',
+    )
   } else if (station) {
     door(b, 0, face, '#8aaca0')
     for (const s of [-1, 1])

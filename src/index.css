@@ -1306,3 +1306,20 @@ kbd {
 .mail-form textarea {
   resize: vertical;
 }
+.world-sign {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: min(240px, 44vw);
+  text-align: center;
+  pointer-events: none;
+  padding: 4px 10px;
+  color: #284939;
+  background: #fff8d9f5;
+  border: 1px solid #685c3c;
+  box-shadow: 0 2px 0 #35584675;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 900;
+}

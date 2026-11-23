@@ -1,14 +1,16 @@
 import * as T from 'three'
 import { makeSky } from '../environment/sky'
-import { anchors, destinations, type Place } from '../data/village'
+import { anchors, destinations } from '../data/village'
 import { createVisitor, createGuide } from './character'
+import { makeInterior } from './interior'
 import { createScenery } from './scenery'
 import { walkable, route, type Point } from './navigation'
-import type { VillageEvents, VillageController } from './contracts'
+import type { Target, VillageEvents, VillageController } from './contracts'
 
 export function startVillage(
   canvas: HTMLCanvasElement,
   events: VillageEvents,
+  signs: (HTMLElement | null)[],
 ): VillageController {
   const low = window.innerWidth < 760 || navigator.hardwareConcurrency <= 4
   const motion = matchMedia('(prefers-reduced-motion: reduce)')
@@ -29,16 +31,45 @@ export function startVillage(
   const scenery = createScenery(low),
     visitor = createVisitor(),
     guide = createGuide()
-  guide.group.position.set(-1, 0, 3.8)
+  guide.group.position.set(1, 0, 8.3)
+  guide.group.scale.setScalar(1.4)
   guide.group.userData.zone = 'npc'
   scene.add(scenery.group, visitor.group, guide.group)
   visitor.group.position.set(2.5, -0.06, 11.6)
-  const pickables = [...scenery.interactives, guide.group]
+  const outdoorPickables = [...scenery.interactives, guide.group]
+  const room = makeInterior()
+  let inside = false
+  const doorstep = new T.Vector3()
+  const getPickables = () => (inside ? room.interactives : outdoorPickables)
+  const canWalk = (x: number, z: number) =>
+    inside
+      ? Math.abs(x) < 3.6 &&
+        Math.abs(z) < 2.62 &&
+        !(x < -2.38 && z > -1.7 && z < 0.83) &&
+        !(x > 1.72 && z < -1.65) &&
+        Math.hypot(x - 0.12, z + 1.62) > 0.58
+      : walkable(x, z)
+  function setInside(value: boolean) {
+    if (inside === value) return
+    if (value) doorstep.copy(visitor.group.position)
+    inside = value
+    ;(value ? room.scene : scene).add(visitor.group)
+    if (value) visitor.group.position.set(0, 0, 1.16)
+    else visitor.group.position.copy(doorstep)
+    visitor.group.rotation.y = value ? Math.PI : 0
+    goal = []
+    keys.clear()
+    stick.set(0, 0)
+    setHover(null)
+    updateReach()
+    events.inside(value)
+  }
   const ray = new T.Raycaster(),
     pointer = new T.Vector2(),
     point = new T.Vector3()
   const plane = new T.Plane(new T.Vector3(0, 1, 0), 0)
   const nearestPoint = new T.Vector3()
+  const projected = new T.Vector3()
   const ring = new T.Mesh(
     new T.RingGeometry(0.35, 0.43, 35),
     new T.MeshBasicMaterial({
@@ -51,7 +82,17 @@ export function startVillage(
   )
   ring.rotation.x = -Math.PI / 2
   ring.visible = false
-  scene.add(ring)
+  const marker = new T.Mesh(
+    new T.OctahedronGeometry(0.2),
+    new T.MeshBasicMaterial({ color: '#ffe18a' }),
+  )
+  const guideMarker = new T.Mesh(
+    new T.OctahedronGeometry(0.14),
+    new T.MeshBasicMaterial({ color: '#fff2bc' }),
+  )
+  guideMarker.position.y = 1.34
+  guide.group.add(guideMarker)
+  scene.add(ring, marker)
   const focus = new T.Vector3(0, 0, 0),
     desired = new T.Vector3(),
     cameraOffset = new T.Vector3(8, 19, 27)
@@ -62,10 +103,11 @@ export function startVillage(
     step = new T.Vector2()
   let paused = false,
     zoom = 1,
-    reach: Place | null = null,
+    reach: Target | null = null,
     project: number | undefined
   let goal: Point[] = [],
     elapsed = 0,
+    arrivalTime = 0,
     last = 0,
     night = atmosphere.update(new Date()),
     lastLight = 0,
@@ -73,7 +115,7 @@ export function startVillage(
     frame = 0,
     dead = false
   let hovered: T.Object3D | null = null,
-    hovering: Place | null = null
+    nearObject: T.Object3D | null = null
   const resize = () => {
     renderer.setSize(canvas.clientWidth, canvas.clientHeight, false)
     camera.updateProjectionMatrix()
@@ -90,20 +132,16 @@ export function startVillage(
     )
     ray.setFromCamera(pointer, camera)
     let o: T.Object3D | null =
-      ray.intersectObjects(pickables, true)[0]?.object ?? null
+      ray.intersectObjects(getPickables(), true)[0]?.object ?? null
     while (o && !o.userData.zone) o = o.parent
     return o
   }
   function setHover(o: T.Object3D | null) {
-    if (hovered && hovered !== o) hovered.scale.setScalar(1)
-    if (o) o.scale.setScalar(1.025)
+    if (hovered === o) return
     hovered = o
-    const zone: Place | null = o?.userData.zone ?? null
-    if (zone !== hovering) {
-      hovering = zone
-      events.hover(zone)
-      canvas.style.cursor = zone ? 'pointer' : 'crosshair'
-    }
+    const zone: Target | null = o?.userData.zone ?? null
+    events.hover(zone, o?.userData.project)
+    canvas.style.cursor = zone ? 'pointer' : 'crosshair'
   }
   canvas.addEventListener(
     'pointermove',
@@ -130,14 +168,18 @@ export function startVillage(
         return
       const o = resolve(e)
       if (o) {
-        events.open(o.userData.zone, o.userData.project)
+        activate(o.userData.zone, o.userData.project)
         return
       }
       if (ray.ray.intersectPlane(plane, point))
-        goal = route(
-          [visitor.group.position.x, visitor.group.position.z],
-          [point.x, point.z],
-        )
+        goal = inside
+          ? canWalk(point.x, point.z)
+            ? [[point.x, point.z]]
+            : []
+          : route(
+              [visitor.group.position.x, visitor.group.position.z],
+              [point.x, point.z],
+            )
       if (goal.length) {
         ring.position.set(point.x, 0.09, point.z)
         ring.visible = true
@@ -168,8 +210,18 @@ export function startVillage(
     'ArrowLeft',
     'ArrowRight',
   ]
+  function activate(target: Target, exhibit?: number) {
+    arrivalTime = 3.5
+    if (target === 'exit') setInside(false)
+    else if (target === 'about' && !inside) {
+      visitor.group.position.set(-7, 0, -0.5)
+      setInside(true)
+    } else events.open(target, exhibit)
+  }
   function interact() {
-    if (!paused && reach) events.open(reach, project)
+    if (paused) return
+    updateReach()
+    if (reach) activate(reach, project)
   }
   window.addEventListener(
     'keydown',
@@ -216,35 +268,44 @@ export function startVillage(
     let best = Infinity
     reach = null
     project = undefined
-    for (const o of pickables) {
-      const zone = o.userData.zone as Place
+    nearObject = null
+    for (const o of getPickables()) {
+      const zone = o.userData.zone as Target
       if (!zone) continue
       o.getWorldPosition(nearestPoint)
       const dx = p.x - nearestPoint.x,
         dz = p.z - nearestPoint.z,
         dist = Math.hypot(dx, dz)
-      const limit =
-        zone === 'projects' ||
-        zone === 'npc' ||
-        zone === 'map' ||
-        zone === 'contact'
+      const limit = inside
+        ? 1.45
+        : zone === 'projects' ||
+            zone === 'npc' ||
+            zone === 'map' ||
+            zone === 'contact'
           ? 1.8
           : 3.5
       if (dist <= limit && dist < best) {
+        nearObject = o
         reach = zone
         best = dist
         project = o.userData.project
       }
     }
-    events.position(p.x, p.z, reach)
+    events.position(
+      inside ? doorstep.x : p.x,
+      inside ? doorstep.z : p.z,
+      reach,
+      project,
+    )
   }
   function tick(stamp: number) {
     if (dead || document.hidden) return
     frame = requestAnimationFrame(tick)
     if (last && stamp - last < (paused ? 100 : low ? 31 : 15)) return
-    const dt = Math.min(0.06, Math.max(0, (stamp - (last || stamp)) / 1000))
+    const dt = Math.min(0.14, Math.max(0, (stamp - (last || stamp)) / 1000))
     last = stamp
     elapsed += dt
+    if (!paused) arrivalTime += dt
     if (stamp - lastLight > 8000) {
       night = atmosphere.update(new Date())
       lastLight = stamp
@@ -286,8 +347,8 @@ export function startVillage(
           )
         const ox = p.x,
           oz = p.z
-        if (walkable(p.x + step.x, p.z)) p.x += step.x
-        if (walkable(p.x, p.z + step.y)) p.z += step.y
+        if (canWalk(p.x + step.x, p.z)) p.x += step.x
+        if (canWalk(p.x, p.z + step.y)) p.z += step.y
         moving = Math.abs(p.x - ox) + Math.abs(p.z - oz) > 0.0002
         if (!moving) goal = []
         if (moving) {
@@ -302,13 +363,15 @@ export function startVillage(
     const bridge =
       Math.abs(p.x + 2.5) < 1.4 &&
       (Math.abs(p.z - 1) < 0.85 || Math.abs(p.z - 6.5) < 0.85)
-    p.y = bridge
-      ? 0.22
-      : p.z > 9.95
-        ? -0.06
-        : p.x < -3.55 && p.x > -8.55 && p.z > 2.6 && p.z < 6.15
-          ? 0.08
-          : 0
+    p.y = inside
+      ? 0.09
+      : bridge
+        ? 0.22
+        : p.z > 9.95
+          ? -0.06
+          : p.x < -3.55 && p.x > -8.55 && p.z > 2.6 && p.z < 6.15
+            ? 0.08
+            : 0
     visitor.animate(elapsed, moving, motion.matches)
     guide.animate(elapsed, false, motion.matches)
     scenery.animate(elapsed, night, p.x, p.z, motion.matches)
@@ -322,11 +385,27 @@ export function startVillage(
       ring.scale.setScalar(1)
       if (!goal.length) ring.visible = false
     }
-    desired.set(p.x * 0.53, 0, p.z * 0.5)
-    focus.lerp(desired, motion.matches ? 1 : 1 - Math.exp(-dt * 3))
+    const intro =
+      motion.matches || inside
+        ? 1
+        : T.MathUtils.smoothstep(arrivalTime, 0.15, 3.5)
+    desired.set(
+      inside ? 0 : p.x * 0.53 * intro,
+      inside ? 0.55 : 0,
+      inside ? 0 : p.z * 0.65 * intro,
+    )
+    focus.lerp(desired, motion.matches || inside ? 1 : 1 - Math.exp(-dt * 3))
     const aspect = canvas.clientWidth / Math.max(1, canvas.clientHeight)
-    const intro = motion.matches ? 1 : Math.min(1, elapsed / 2.3)
-    const span = (aspect < 0.9 ? 10.9 : 8.8) / zoom + (1 - intro) ** 2 * 5
+    const span = inside
+      ? (aspect < 0.9 ? 6 : 4.2) / zoom
+      : (aspect < 0.9 ? 10.9 : 8.8) / zoom +
+        (1 - intro) * (aspect < 0.9 ? 14 : 8)
+    const orbit = (1 - intro) * 1.05
+    cameraOffset.set(
+      8 * Math.cos(orbit) - 27 * Math.sin(orbit),
+      19 + 16 * (1 - intro),
+      27 * Math.cos(orbit) + 8 * Math.sin(orbit),
+    )
     camera.left = -span * aspect
     camera.right = span * aspect
     camera.top = span
@@ -334,11 +413,39 @@ export function startVillage(
     camera.position.copy(focus).add(cameraOffset)
     camera.lookAt(focus)
     camera.updateProjectionMatrix()
+    camera.updateMatrixWorld()
+    signs.forEach((sign, index) => {
+      if (!sign) return
+      const [x, z] = index === 0 ? anchors.tech : anchors.npc
+      projected.set(x, index === 0 ? 3.46 : 2.1, z).project(camera)
+      const visible =
+        !inside &&
+        !paused &&
+        intro > 0.78 &&
+        Math.abs(projected.x) < 0.87 &&
+        Math.abs(projected.y) < 0.79
+      sign.hidden = !visible
+      if (visible)
+        sign.style.transform = `translate(${((projected.x + 1) * canvas.clientWidth) / 2}px,${((1 - projected.y) * canvas.clientHeight) / 2}px) translate(-50%,-100%)`
+    })
     if (elapsed - lastHud > 0.17) {
       lastHud = elapsed
       updateReach()
     }
-    renderer.render(scene, camera)
+    const exhibit = nearObject
+    marker.visible =
+      !inside &&
+      !paused &&
+      !!exhibit &&
+      (exhibit.userData.zone === 'projects' || exhibit.userData.zone === 'npc')
+    if (exhibit && marker.visible) {
+      marker.position.set(
+        exhibit.position.x,
+        1.95 + (motion.matches ? 0 : 0.12 * Math.sin(elapsed * 5)),
+        exhibit.position.z,
+      )
+    }
+    renderer.render(inside ? room.scene : scene, camera)
   }
   document.addEventListener(
     'visibilitychange',
@@ -364,7 +471,16 @@ export function startVillage(
       setHover(null)
     },
     zoom: changeZoom,
+    leave() {
+      setInside(false)
+    },
     travel(id) {
+      arrivalTime = 3.5
+      if (id === 'about') {
+        if (!inside) activate(id)
+        return
+      }
+      setInside(false)
       const [x, z] = destinations[id]
       visitor.group.position.set(x, 0, z)
       goal = []
@@ -386,17 +502,20 @@ export function startVillage(
       const geometries = new Set<T.BufferGeometry>(),
         materials = new Set<T.Material>(),
         textures = new Set<T.Texture>()
-      scene.traverse((o) => {
-        if (o instanceof T.Mesh || o instanceof T.Points) {
-          geometries.add(o.geometry)
-          for (const m of [o.material].flat()) {
-            materials.add(m)
-            for (const v of Object.values(m))
-              if (v instanceof T.Texture) textures.add(v)
+      const collect = (root: T.Scene) =>
+        root.traverse((o) => {
+          if (o instanceof T.Mesh || o instanceof T.Points) {
+            geometries.add(o.geometry)
+            for (const m of [o.material].flat()) {
+              materials.add(m)
+              for (const v of Object.values(m))
+                if (v instanceof T.Texture) textures.add(v)
+            }
+            if (o instanceof T.InstancedMesh) o.dispose()
           }
-          if (o instanceof T.InstancedMesh) o.dispose()
-        }
-      })
+        })
+      collect(scene)
+      collect(room.scene)
       textures.forEach((t) => t.dispose())
       geometries.forEach((g) => g.dispose())
       materials.forEach((m) => m.dispose())

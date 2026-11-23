@@ -29,7 +29,7 @@ const endZ = -10.5,
 function terrain(b: Batch) {
   const rand = seeded(71)
   // Each bank follows one arc of the coastline and returns along the stream.
-  const n = 70,
+  const n = 112,
     coast: XZ[] = []
   for (let i = 0; i < n; i++) {
     const a = (2 * Math.PI * i) / n,
@@ -38,7 +38,7 @@ function terrain(b: Batch) {
         0.018 * Math.sin(a * 7) +
         0.012 * Math.cos(a * 11) +
         0.008 * Math.sin(a * 19)
-    coast.push([16 * Math.cos(a) * ripple, 10.85 * Math.sin(a) * ripple])
+    coast.push([15.65 * Math.cos(a) * ripple, 11.25 * Math.sin(a) * ripple])
   }
   b.horizontal(
     coast.map(([x, z]) => [x * 1.044, z * 1.052]),
@@ -84,9 +84,9 @@ function terrain(b: Batch) {
       const z = last + ((first - last) * j) / 34
       outline.push([river(z) + side * riverWidth(z), z])
     }
-    b.horizontal(outline, -0.24, 0.45, '#d4a36a', undefined, 0.075)
-    b.horizontal(outline, -0.11, 0.16, '#dbb87d', undefined, 0.06)
-    b.horizontal(outline, 0.005, 0.16, '#a3c575', undefined, 0.045)
+    b.horizontal(outline, -0.28, 0.39, '#d4a36a', undefined, 0.155)
+    b.horizontal(outline, -0.12, 0.19, '#dbb87d', undefined, 0.105)
+    b.horizontal(outline, 0.005, 0.14, '#a3c575', undefined, 0.095)
   }
   const stream: XZ[] = []
   for (const side of [-1, 1])
@@ -810,19 +810,41 @@ export function createScenery(low: boolean) {
   add(pickable(mailbox(kit), 'contact', 2, 5.5))
   add(pickable(sign(kit), 'map', 0, 2))
   group.add(staticParts.finish())
-  const drift = new Batch(kit)
-  for (let i = 0; i < (low ? 13 : 25); i++) {
-    const z = rand() * 19 - 9.5,
-      x = river(z) + (rand() - 0.5) * 0.99
-    drift.block(
-      [x, -0.125, z],
-      [0.045, 0.014, 0.12 + rand() * 0.38],
-      i % 3 ? '#a9ded0' : '#89cfc1',
-      [0, rand() * 0.18 - 0.09, 0],
-      true,
-    )
+  const ripples = new T.InstancedMesh(
+    new T.SphereGeometry(1, 8, 4),
+    new T.MeshBasicMaterial({
+      color: '#d5fff0',
+      transparent: true,
+      opacity: 0.72,
+      depthWrite: false,
+    }),
+    low ? 26 : 58,
+  )
+  ripples.frustumCulled = false
+  const wave = new T.Object3D()
+  const flow = Array.from({ length: ripples.count }, () => ({
+    start: rand() * 21,
+    offset: (rand() - 0.5) * 0.96,
+    speed: 0.95 + rand() * 0.9,
+    length: 0.12 + rand() * 0.38,
+  }))
+  function flowRiver(time: number) {
+    flow.forEach(({ start, offset, speed, length }, index) => {
+      const z = endZ + ((start + time * speed) % 21)
+      const fade = Math.min(1, (z - endZ) * 1.5, (frontZ - z) * 1.5)
+      wave.position.set(
+        river(z) + offset + Math.sin(z * 1.5 + index) * 0.048,
+        -0.119,
+        z,
+      )
+      wave.scale.set((0.024 + (index % 3) * 0.012) * fade, 0.009, length * fade)
+      wave.rotation.y = 0.17 * Math.cos(z + index)
+      wave.updateMatrix()
+      ripples.setMatrixAt(index, wave.matrix)
+    })
+    ripples.instanceMatrix.needsUpdate = true
   }
-  const ripples = drift.finish()
+  flowRiver(0)
   group.add(ripples)
   const seabirds = [
     [2.95, 12.52],
@@ -873,7 +895,7 @@ export function createScenery(low: boolean) {
       kit.motion.value = reduced ? 0 : 1
       kit.glass.emissiveIntensity = 0.04 + night * 1.35
       if (reduced) return
-      ripples.position.z = Math.sin(time * 0.53) * 0.11
+      flowRiver(time)
       seabirds.forEach((g, i) => {
         g.rotation.z = 0.035 * Math.sin(time * 1.46 + i)
         g.rotation.y = 1.43 - i * 2.25 + 0.18 * Math.sin(time * 0.63 + i)

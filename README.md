@@ -1,6 +1,6 @@
 # Iker’s World
 
-Un portfolio jugable de Iker Aramburu Muñoz. El muelle da acceso a una isla 3D con una casa, un laboratorio, seis expositores de proyectos, una estación, una cafetería y un buzón.
+Un portfolio jugable de Iker Aramburu Muñoz. La cámara sobrevuela la costa y aterriza en el muelle, que da acceso a una isla 3D con una casa, un laboratorio, seis expositores de proyectos, una estación, una cafetería y un buzón.
 
 ## Desarrollo local
 
@@ -21,7 +21,7 @@ npm run preview
 
 ## Jugar
 
-Camina con WASD, las flechas, los botones táctiles o un toque en el terreno. La tecla E abre el lugar cercano. También puedes pulsar directamente sobre un edificio o expositor. Usa M para viajar por el mapa y la rueda del ratón o los botones + y − para ajustar la cámara. Escape cierra la ventana activa.
+Camina con WASD, las flechas, los botones táctiles o un toque en el terreno. La tecla E abre el lugar cercano. También puedes pulsar directamente sobre un edificio o expositor. Usa M para viajar por el mapa y la rueda del ratón o los botones + y − para ajustar la cámara. La tecla E muestra el nombre del proyecto que abrirás. Pip da la bienvenida cerca del muelle. Entra en la casa de Iker por su puerta o desde el mapa y abre el álbum de la sala para ver su perfil. Escape cierra la ventana activa o te lleva al exterior de la casa.
 
 El reloj y la iluminación siguen la hora local del navegador. El sonido se activa desde el altavoz. El juego recuerda el idioma y respeta la preferencia de movimiento reducido. La guía de controles da acceso a la versión ligera con mapa, que también se abre cuando WebGL no está disponible.
 

@@ -254,14 +254,23 @@ export function createVisitor(): IslandCharacter {
   }
 
   group.name = 'visitor'
+  let gait = 0
+  let previous = 0
+  let effort = 0
   return {
     group,
     animate(time, moving, reduced) {
-      const stride = moving && !reduced ? Math.sin(time * 11) : 0
+      const dt = Math.min(0.1, time - previous)
+      previous = time
+      effort += ((moving && !reduced ? 1 : 0) - effort) * Math.min(1, dt * 16)
+      gait += dt * 12 * effort
+      const stride = Math.sin(gait) * effort
+      body.rotation.x = reduced ? 0 : effort * 0.09
+      body.rotation.z = reduced ? 0 : stride * 0.044
       body.position.y = reduced
         ? 0
         : moving
-          ? Math.abs(stride) * 0.034
+          ? Math.abs(Math.cos(gait)) * 0.105 * effort
           : Math.sin(time * 2.2) * 0.009
       head.rotation.z = reduced
         ? 0
@@ -271,10 +280,10 @@ export function createVisitor(): IslandCharacter {
       gaze.scale.y = reduced
         ? 1
         : Math.min(1, Math.abs(((time + 1.2) % 4.7) - 2) * 13 + 0.08)
-      legs[0].rotation.x = stride * 0.47
-      legs[1].rotation.x = -stride * 0.47
-      arms[0].rotation.x = -stride * 0.38
-      arms[1].rotation.x = stride * 0.38
+      legs[0].rotation.x = stride * 0.82
+      legs[1].rotation.x = -stride * 0.82
+      arms[0].rotation.x = -stride * 0.68
+      arms[1].rotation.x = stride * 0.68
     },
   }
 }

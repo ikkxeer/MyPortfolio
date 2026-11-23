@@ -6,14 +6,20 @@ export default function Game({
   events,
   ready,
   paused,
+  workshop,
+  guide,
 }: {
   controller: RefObject<VillageController | null>
   events: VillageEvents
   ready: () => void
   paused: boolean
+  workshop: string
+  guide: string
 }) {
   const canvas = useRef<HTMLCanvasElement>(null),
     blocked = useRef(paused)
+  const workshopSign = useRef<HTMLSpanElement>(null)
+  const guideSign = useRef<HTMLSpanElement>(null)
   useEffect(() => {
     blocked.current = paused
     controller.current?.pause(paused)
@@ -23,7 +29,10 @@ export default function Game({
     import('../world/engine')
       .then(({ startVillage }) => {
         if (!active || !canvas.current) return
-        controller.current = startVillage(canvas.current, events)
+        controller.current = startVillage(canvas.current, events, [
+          workshopSign.current,
+          guideSign.current,
+        ])
         controller.current.pause(blocked.current)
         ready()
       })
@@ -36,5 +45,15 @@ export default function Game({
       controller.current = null
     }
   }, [controller, events, ready])
-  return <canvas ref={canvas} className="game-canvas" aria-hidden="true" />
+  return (
+    <>
+      <canvas ref={canvas} className="game-canvas" aria-hidden="true" />
+      <span className="world-sign" ref={workshopSign} hidden aria-hidden="true">
+        {workshop}
+      </span>
+      <span className="world-sign" ref={guideSign} hidden aria-hidden="true">
+        {guide}
+      </span>
+    </>
+  )
 }
